@@ -1,0 +1,31 @@
+Banking Application
+
+Classes Needed:
+    Client/Customer
+        Name
+        Password
+        Client ID
+        Accounts (clients can have multiple accounts)
+
+    Accounts
+        Account Holders
+        Type (checkings/savings)
+        Account number
+        Amount inside
+        Transaction History
+
+    Transactions
+        Client
+        Account
+
+
+Driver/main functions
+    Sign-in/Log in
+    Withdraw
+    Deposit
+    View Balance
+    Transfer Money Between Accounts
+    Create additional account ()
+
+
+
