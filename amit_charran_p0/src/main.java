@@ -1,8 +1,11 @@
-import java.util.*;
+
+
+import com.revature.tools.ArrayList;
+import java.lang.reflect.Array;
+
 public class main {
     public static void main(String[] args) {
-        System.out.println("Hello");
-
-
+        ArrayList<Integer> test = new ArrayList<>(2);
+        test.pop();
     }
 }
