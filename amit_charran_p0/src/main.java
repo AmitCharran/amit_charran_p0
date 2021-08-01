@@ -1,9 +1,11 @@
-import java.util.*;
+
+import com.revature.tools.ArrayList;
+
+import java.lang.reflect.Array;
+
 public class main {
     public static void main(String[] args) {
-        List<String> myList = new ArrayList<>();
-        ArrayList<String> list2 = new ArrayList<>();
-
-
+        ArrayList<Integer> test = new ArrayList<>(2);
+        test.pop();
     }
 }
