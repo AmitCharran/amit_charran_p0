@@ -13,6 +13,7 @@ Classes Needed:
         Account number
         Amount inside
         Transaction History
+    // Registration classes
 
     Transactions
         Client
@@ -28,4 +29,11 @@ Driver/main functions
     Create additional account ()
 
 
+// Connection package so everything that needs to connect can go through that package
+
+// login table
+// account table
+    checkings table
+    savings tables
+// transaction table
 
