@@ -4,23 +4,42 @@ Classes Needed:
     Client/Customer
         Name
         Password
+        email //verify email
         Client ID
-        Accounts (clients can have multiple accounts)
+        Accounts<Account>
+        Transaction History
+
+            functions
+                Constructor(name, pass, email)
+                Accessor/Mutator
+                isPasswordSecure(password)
+                viewAccounts()
+                transferMoneyToOtherAccounts(Acc1, Acc2, Money)
 
     Accounts
-        Account Holders
-        Type (checkings/savings)
-        Account number
-        Amount inside
+        Holders<Clients>
+        enum Type (checkings/savings)
+        Balance
+        Amount Number
         Transaction History
+            functions
+                Accessor/Mutators
+                withdraw (double n)
+                deposit  (double n)
     // Registration classes
 
     Transactions
-        Client
-        Account
+        TimeOfTransaction
+        AmountPaid
+        UserClient
+            functions
+                createTransaction
+                WriteToTable
 
 
-Driver/main functions
+
+
+Driver/Driver functions
     Sign-in/Log in
     Withdraw
     Deposit
@@ -29,11 +48,40 @@ Driver/main functions
     Create additional account ()
 
 
+// Driver Interface
+    Welcome to our bank!
+    press anything to continue!
+
+    login or sign-up or quit
+
+    // log in -- enters password and email
+        Hello Name
+        What would you like to do?
+        Despoit
+        Withdraw
+        transfer money between accounts
+        View accounts info
+        View transaction history
+        Delete account --
+            your check with all your money will be mailed to you
+            put money into another account
+        go back to previous menu
+
+
+    //  Name --> give escape options
+        Email
+        password
+
+        choose account type -- generate info for them
+
+
+
 // Connection package so everything that needs to connect can go through that package
 
 // login table
 // account table
     checkings table
     savings tables
+    unique table for account numbers
 // transaction table
 
