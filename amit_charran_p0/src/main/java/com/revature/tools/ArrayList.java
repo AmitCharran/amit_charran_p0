@@ -1,5 +1,5 @@
 package com.revature.tools;
-import java.lang.Exception.*;
+import java.lang.Exception;
 
 /**
  * This application is an ArrayList
@@ -53,7 +53,7 @@ public class ArrayList<T> {
 
     /**
      * Add one item to the end of the array and increases the size
-     * @param item
+     * @param item this is being appened to the function
      */
     public void append(T item){
         if(size == capacity){
@@ -64,8 +64,8 @@ public class ArrayList<T> {
     }
 
     /**
-     * Utilizes the appends function to add an item to the array
-     * @param item
+     * Utilizes the appends
+     * @param item this is being appened to the function
      */
     public void insert(T item){
         this.append(item);
@@ -73,7 +73,7 @@ public class ArrayList<T> {
 
     /**
      * Utilizes the appends function to add an item to the array
-     * @param item
+     * @param item this is being appened to the function
      */
     public void add(T item){
         this.append(item);
@@ -81,7 +81,7 @@ public class ArrayList<T> {
 
     /**
      * Gets an element at a particular index in an array
-     * @param index
+     * @param index the index of the array
      * @return returns an element from the array
      */
     public T get(int index){
@@ -93,7 +93,7 @@ public class ArrayList<T> {
 
     /**
      * Adds an item to the front of the array
-     * @param item
+     * @param item puts the item to the front of the array
      */
     public void push(T item){
         this.addAtIndex(item, 0);
@@ -102,26 +102,19 @@ public class ArrayList<T> {
     /**
      * removes an item from the front of the array
      */
-    public void pop(){
+    public T pop(){
+        T t = this.get(0);
         this.removeAtIndex(0);
-    }
-
-    /**
-     * Adds an item into any valid index
-     * @param index
-     * @param item
-     */
-    public void addAtIndex(int index, T item){
-        this.addAtIndex(item, index);
+        return t;
     }
 
     /**
      * Adds an item to any valid index in the ArrayList
-     * @param item
-     * @param index
+     * @param item index the item will be added to
+     * @param index item to be added
      */
     public void addAtIndex(T item, int index){
-        if(index >= size || index < 0){
+        if(index > size || index < 0){
            throw new ArrayIndexOutOfBoundsException();
         }
 
@@ -147,7 +140,7 @@ public class ArrayList<T> {
 
     /**
      * Removes the very first instance of an item in an array
-     * @param item
+     * @param item item to be removed
      */
     public void removeElement(T item){
         if(!this.contains(item)){
@@ -164,8 +157,8 @@ public class ArrayList<T> {
 
     /**
      * Returns all index of a particular item if there are duplicates
-     * @param item
-     * @return
+     * @param item item to be removed
+     * @return int array
      */
     public int[] getAllIndexOfItem(T item){
         int counter = 0;
@@ -200,7 +193,7 @@ public class ArrayList<T> {
     /**
      * This is used to shift elements over in an array
      * It is used for adding items at a particular index of an array
-     * @param index
+     * @param index move element over at that index
      */
     private void moveElementOver(int index){
         // when removing element the array needs to be shifted over
@@ -213,8 +206,8 @@ public class ArrayList<T> {
 
     /**
      * Finds the index of the first occurance of an item
-     * @param item
-     * @return
+     * @param item item you are trying to find
+     * @return index of item
      */
     public int indexOf(T item){
         // get the first occurrence of object
@@ -224,16 +217,17 @@ public class ArrayList<T> {
         }
         for(int i =0; i < size; i++){
             if(array[i] == item || array[i].equals(item)){
-                counter++;
+                return counter;
             }
+            counter++;
         }
         return -1;
     }
 
     /**
      * Finds the index of the first occurance of an item
-     * @param item
-     * @return
+     * @param item item you are trying to find
+     * @return index of an item
      */
     public int find(T item){
         return this.indexOf(item);
@@ -241,7 +235,7 @@ public class ArrayList<T> {
 
     /**
      * returns the current size of the array
-     * @return
+     * @return size of arraylist
      */
     public int size(){
         return size;
@@ -249,7 +243,7 @@ public class ArrayList<T> {
 
     /**
      * returns true if the array is empty
-     * @return
+     * @return if empty
      */
     public boolean isEmpty(){
         return size == 0;
@@ -302,7 +296,7 @@ public class ArrayList<T> {
 
     /**
      * Formats the array for output
-     * @return
+     * @return outputted string [*, *, *]
      */
     public String toString(){
         StringBuilder output = new StringBuilder("[");
