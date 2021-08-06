@@ -1,6 +1,6 @@
 package com.revature.model;
-import com.revature.tools.AccountType;
-import com.revature.tools.ArrayList;
+import com.revature.util.AccountType;
+import com.revature.util.ArrayList;
 
 /**
  * This is the account class for the banking app.
@@ -9,7 +9,7 @@ import com.revature.tools.ArrayList;
  * @version 1.0
  * @ Since 2021-08-3
  */
-public class Account {
+public class Account implements AccountInterface{
     ArrayList<Client> holders;
     AccountType type;
     double balance;
@@ -47,14 +47,14 @@ public class Account {
         // update transaction history
     }
 
-    public boolean validForWithdraw(double n){
+    private boolean validForWithdraw(double n){
         if(n > this.balance || n < 0){
             return false;
         }
         return true;
 
     }
-    public boolean validForDeposit(double n){
+    private boolean validForDeposit(double n){
         if(n < 0){
             return false;
         }

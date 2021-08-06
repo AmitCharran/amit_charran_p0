@@ -1,12 +1,14 @@
 
 import com.revature.model.Client;
-import com.revature.tools.ArrayList;
 
 import java.util.Scanner;
 
 public class Driver {
     private static final Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
+
+        // need a postgres sql driver
+        // google MVN repositories
 
         initial_menu();
 

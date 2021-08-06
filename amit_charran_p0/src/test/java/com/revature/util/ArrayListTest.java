@@ -1,4 +1,4 @@
-package com.revature.tools;
+package com.revature.util;
 
 import org.junit.After;
 import org.junit.Before;

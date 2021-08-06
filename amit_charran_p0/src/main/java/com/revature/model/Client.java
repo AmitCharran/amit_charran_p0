@@ -1,5 +1,5 @@
 package com.revature.model;
-import com.revature.tools.ArrayList;
+import com.revature.util.ArrayList;
 
 /**
  * This class is for my banking application. This is how I keep the clients information.
@@ -7,7 +7,7 @@ import com.revature.tools.ArrayList;
  * @version 1.0
  * @ Since 2021-08-1
  */
-public class Client {
+public class Client implements ClientInterface{
     String lastName;
     String firstName;
     String username;
@@ -27,7 +27,7 @@ public class Client {
         }
     }
 
-    public boolean isPasswordSecure(String password){
+    private boolean isPasswordSecure(String password){
         // returns false if password is not secure
 
         return true;
