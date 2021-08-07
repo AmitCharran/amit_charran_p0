@@ -66,7 +66,6 @@ public class Driver {
             String email = sc.nextLine();
             //validate email
 
-            client.setEmail(email);
             break;
         }
 

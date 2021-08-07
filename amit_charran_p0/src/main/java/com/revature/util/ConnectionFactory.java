@@ -30,9 +30,11 @@ public class ConnectionFactory {
                     properties.getProperty("endpoint"),
                     properties.getProperty("username"),
                     properties.getProperty("password"));
+            connection.setSchema("p0");
         }catch (SQLException e){
             e.printStackTrace();
         }
+
         return connection;
 
     }

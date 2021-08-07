@@ -8,17 +8,25 @@ import com.revature.util.ArrayList;
  * @ Since 2021-08-1
  */
 public class Client implements ClientInterface{
-    String lastName;
     String firstName;
+    String lastName;
     String username;
     String password;
-    String email;
     int clientID;
     ArrayList<Account> accounts;
 
     public Client(){
         // generate client ID
         accounts = new ArrayList<>();
+    }
+
+    public Client(String firstName, String lastName, String username, String password, int clientID, ArrayList<Account> accounts) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.clientID = clientID;
+        this.accounts = accounts;
     }
 
     public void viewAccount(){
@@ -69,14 +77,6 @@ public class Client implements ClientInterface{
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public int getClientID() {
         return clientID;
     }
@@ -91,5 +91,9 @@ public class Client implements ClientInterface{
 
     public void setAccounts(ArrayList<Account> accounts) {
         this.accounts = accounts;
+    }
+
+    public String toString(){
+        return this.username;
     }
 }

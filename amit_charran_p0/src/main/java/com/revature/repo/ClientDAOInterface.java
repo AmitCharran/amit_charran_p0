@@ -13,11 +13,11 @@ public interface ClientDAOInterface {
     public Client retrieveClient(String username);
 
     //UPDATE
-    public void updateFirstName(String firstName);
-    public void updateLastName(String lastName);
-    public void updatePassword(String newPassword);
+    public void updateFirstName(Client c, String firstName);
+    public void updateLastName(Client c,String lastName);
+    public void updatePassword(Client c, String newPassword);
 
     //DELETE
-    public void deleteUser(String username, String password);
+    public void deleteUser(Client c);
 
 }
