@@ -85,3 +85,26 @@ Driver/Driver functions
     unique table for account numbers
 // transaction table
 
+
+
+Columns
+FirstName LastName username password accountNumber accountType balance otherHolders transactions
+
+
+Client
+FirstName LastName username password
+
+Account
+AccountAlias AccountNumber AccountType Balance Holders(HoldersTableForeignKey)
+
+bank_Transaction
+TransactionDate TransactionAmount TransactionType(withdraw, deposit, transfer) TransferToWho(account foreign key)
+
+Holders -- this is technically a junciton table
+Account (foreign key) Holder#1(client foreign key), Holder#2(client foreign key), Holder#3(client foreign key)
+
+Checking Card Numbers -- keeps track of unqiue numbers -- this table might be useless
+AccountNumber account(foreign key)
+
+Saving Card Numbers
+AccountNumber account(foreign key)
