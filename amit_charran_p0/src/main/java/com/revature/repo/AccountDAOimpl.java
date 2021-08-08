@@ -84,6 +84,11 @@ public class AccountDAOimpl implements AccountDAO {
     }
 
     @Override
+    public void assignUserToAccount(Account a, Client c) {
+        // maybe make this boolean because account can only have 5 users
+    }
+
+    @Override
     public void withdraw(Account a, double money) {
         a.withdraw(money);
         String sql = "UPDATE account SET money = " + a.getBalance() + " WHERE account_id = " + a.getAccount_id();

@@ -23,7 +23,7 @@ public class HolderDAOimpl implements HolderDAO{
         }
 
         int holderID = this.getHolderID(a.getAccount_id());
-        String sql2 = "INSERT INTO account (holder_id) VALUES (?)";
+        String sql2 = "INSERT INTO account (holder_id) VALUES (?) WHERE account_id = " + a.getAccount_id();
         try(Connection connection = ConnectionFactory.getConnection()){
             ps = connection.prepareStatement(sql2);
             ps.setInt(1,holderID);

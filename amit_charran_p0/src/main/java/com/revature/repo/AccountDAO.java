@@ -12,6 +12,7 @@ public interface AccountDAO {
 
     // Update
     public void changeAccountNumber(Account a);
+    public void assignUserToAccount(Account a, Client c);
     public void withdraw(Account a, double money);
     public void deposit(Account a, double money);
 
