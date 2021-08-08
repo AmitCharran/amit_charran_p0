@@ -11,7 +11,7 @@ public class AccountDAOimpl implements AccountDAO {
     @Override
     public void createAccount(Account a) {
          String sql = "INSERT INTO account (account_number, account_type, balance) values (?, ?, ?)";
-         String sql2 = "SELECT account_id FROM account WHERE account_number = "+ a.getAccountNumber();
+         String sql2 = "SELECT account_id FROM account WHERE account_number = ?";
         PreparedStatement ps;
 
 
@@ -22,9 +22,15 @@ public class AccountDAOimpl implements AccountDAO {
             ps.setDouble(3,a.getBalance());
             ps.execute();
 
-            ResultSet rs = ps.executeQuery(sql2);
-            int id = rs.getInt(1);
-            a.setAccount_id(id);
+
+            ps = connection.prepareStatement(sql2);
+            ps.setString(1, a.getAccountNumber());
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                int id = rs.getInt(1);
+                a.setAccount_id(id);
+            }
 
 
             // here I want to get
@@ -32,10 +38,13 @@ public class AccountDAOimpl implements AccountDAO {
             h.createHolder(a);
 
 
-
         }catch (SQLException e){
             e.printStackTrace();
         }
+
+
+
+
 
     }
 
@@ -53,9 +62,9 @@ public class AccountDAOimpl implements AccountDAO {
             a.setAccount_id(ans);
 
 
-            // here I want to get
-            HolderDAO h = new HolderDAOimpl();
-            h.createHolder(a);
+//            // here I want to get
+//            HolderDAO h = new HolderDAOimpl();
+//            h.createHolder(a);
 
 
 
@@ -117,6 +126,11 @@ public class AccountDAOimpl implements AccountDAO {
 
     @Override
     public void deleteAccount(Account a) {
+        if(a.getAccount_id() == 0){
+            int ab = this.retrieveAccountID(a);
+            a.setAccount_id(ab);
+        }
+
         String sql = "DELETE FROM account WHERE account_id = " + a.getAccount_id();
         Statement s;
         try(Connection connection = ConnectionFactory.getConnection()){

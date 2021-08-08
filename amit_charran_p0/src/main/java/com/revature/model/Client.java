@@ -1,4 +1,6 @@
 package com.revature.model;
+import com.revature.repo.ClientDAO;
+import com.revature.repo.ClientDAOimpl;
 import com.revature.util.ArrayList;
 
 /**
@@ -78,6 +80,14 @@ public class Client implements ClientInterface{
     }
 
     public int getClientID() {
+        if(clientID == 0){
+            ClientDAO cDAO = new ClientDAOimpl();
+            Client c = cDAO.retrieveClient(this.username);
+            if(c == null){
+                return -1;
+            }
+            clientID = c.clientID;
+        }
         return clientID;
     }
 
