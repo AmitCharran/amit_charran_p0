@@ -298,6 +298,15 @@ public class ArrayList<T> {
      * @return outputted string [*, *, *]
      */
     public String toString(){
+        if(isEmpty()){
+            return "[]";
+        }
+
+        if(size == 1){
+            return "[" + array[0] + "]";
+        }
+
+
         StringBuilder output = new StringBuilder("[");
         for(int i = 0; i < size; i++){
 

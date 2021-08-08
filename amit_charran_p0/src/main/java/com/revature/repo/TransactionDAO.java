@@ -2,7 +2,7 @@ package com.revature.repo;
 
 import com.revature.util.ArrayList;
 import com.revature.model.Transaction;
-public interface TransactionDAOInterface {
+public interface TransactionDAO {
 
     // Create
     public void createTransaction(String date, double money, String transaction_type, String transaction_by, String transaction_to_who);

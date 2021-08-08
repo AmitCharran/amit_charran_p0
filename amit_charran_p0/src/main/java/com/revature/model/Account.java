@@ -10,10 +10,11 @@ import com.revature.util.ArrayList;
  * @ Since 2021-08-3
  */
 public class Account implements AccountInterface{
-    ArrayList<Client> holders;
-    AccountType type;
-    double balance;
-    int accountNumber; // account numbers need to be handled somehow
+    private ArrayList<Client> holders;
+    private int account_id;
+    private AccountType type;
+    private double balance;
+    private String accountNumber; // account numbers need to be handled somehow
                         // Most likely with SQL
     // Need to add a transactionHistory ArrayList
 
@@ -96,11 +97,19 @@ public class Account implements AccountInterface{
         this.balance = balance;
     }
 
-    public int getAccountNumber() {
+    public String getAccountNumber() {
         return accountNumber;
     }
 
-    public void setAccountNumber(int accountNumber) {
+    public int getAccount_id() {
+        return account_id;
+    }
+
+    public void setAccount_id(int account_id) {
+        this.account_id = account_id;
+    }
+
+    public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 
