@@ -115,13 +115,12 @@ public class HolderDAOimpl implements HolderDAO{
                 for(int i = 3; i <= 7; i++){
                     if(rs.getInt(i) == 0){
                         String client_column = clientIntMatch(i);
-                        String sql2 = "UPDATE holder SET ? = ? WHERE holder_id = ?";
+                        String sql2 = "UPDATE holder SET "+client_column+" = ? WHERE holder_id = ?";
 
                         ps = connection.prepareStatement(sql2);
-                        ps.setString(1, client_column);
-                        ps.setInt(2, c1.getClientID());
-                        ps.setInt(3,holderID);
-
+                        ps.setInt(1, c1.getClientID());
+                        ps.setInt(2,holderID);
+                        ps.execute();
                         break;
                     }
 
@@ -154,11 +153,58 @@ public class HolderDAOimpl implements HolderDAO{
 
     @Override
     public void removeAClient(Account a, Client c) {
-        
+        int client_id = new ClientDAOimpl().retrieveClient(c.getUsername()).getClientID();
+        int account_id = new AccountDAOimpl().retrieveAccountID(a);
+
+        String sql = "SELECT * FROM holder WHERE account_id = ? and " +
+                "(client_one = ? or client_two = ? or client_three = ? or client_four = ? or client_five = ?)";
+
+        try(Connection connection = ConnectionFactory.getConnection()){
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, account_id);
+            ps.setInt(2,client_id);
+            ps.setInt(3,client_id);
+            ps.setInt(4,client_id);
+            ps.setInt(5,client_id);
+            ps.setInt(6,client_id);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                for(int i = 3; i <= 7; i++){
+                    if(rs.getInt(i) == client_id){
+                        String column = clientIntMatch(i);
+                        String sql2 = "UPDATE holder SET "+column+" = null WHERE holder_id = ?";
+                        ps = connection.prepareStatement(sql2);
+                        ps.setInt(1,rs.getInt(1));
+                        ps.execute();
+                        break;
+                    }
+
+                }
+            }
+
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override
     public void deleteRow(Account a) {
+        int accountID = new AccountDAOimpl().retrieveAccountID(a);
+        int holderID = this.getHolderID(accountID);
+        String sql = "DELETE FROM holder WHERE holder_id = " + holderID;
+        Statement s;
+
+        try(Connection connection = ConnectionFactory.getConnection()){
+            s = connection.createStatement();
+            s.executeQuery(sql);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
 
     }
 }
