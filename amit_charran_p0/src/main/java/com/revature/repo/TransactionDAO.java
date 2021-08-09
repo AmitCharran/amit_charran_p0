@@ -5,10 +5,10 @@ import com.revature.model.Transaction;
 public interface TransactionDAO {
 
     // Create
-    public void createTransaction(String date, double money, String transaction_type, String transaction_by, String transaction_to_who);
+    public void createTransaction(Transaction t);
 
     // Read
-    public ArrayList<Transaction> retieveAllTransactionByUser(String user);
+    public ArrayList<Transaction> retrieveAllTransactionByUser(String user);
     public ArrayList<Transaction> retrieveTransactionByTransactionType(String user, String aType);
 
     // Update

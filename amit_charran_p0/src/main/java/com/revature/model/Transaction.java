@@ -12,7 +12,14 @@ public class Transaction {
     private int transaction_by;
     private int transfer_to_who; // myself or null
 
-    public Transaction(){}
+    public Transaction(){
+        transactionID = -1;
+        date = null;
+        transaction_amount =  -1;
+        type = null;
+        transaction_by = -1;
+        transfer_to_who = -1;
+    }
 
     public int getTransactionID() {
         return transactionID;
