@@ -2,7 +2,7 @@ package com.revature.repo;
 
 import com.revature.model.Account;
 import com.revature.model.Client;
-import com.revature.util.ArrayList;
+import com.revature.util.MyArrayList;
 import com.revature.util.ConnectionFactory;
 
 import java.sql.*;
@@ -76,7 +76,7 @@ public class AccountDAOimpl implements AccountDAO {
     }
 
     @Override
-    public ArrayList<Account> returnAllAccounts(Client c) {
+    public MyArrayList<Account> returnAllAccounts(Client c) {
         return null;
     }
 

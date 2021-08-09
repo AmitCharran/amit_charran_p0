@@ -2,7 +2,7 @@ package com.revature.repo;
 
 import com.revature.model.Account;
 import com.revature.model.Client;
-import com.revature.util.ArrayList;
+import com.revature.util.MyArrayList;
 
 import java.sql.*;
 
@@ -32,10 +32,10 @@ public class ClientDAOimpl implements ClientDAO {
     }
 
     @Override
-    public ArrayList<Client> retrieveAllClients() {
+    public MyArrayList<Client> retrieveAllClients() {
         Connection connection = ConnectionFactory.getConnection();
 
-        ArrayList<Client> clientList = new ArrayList<>();
+        MyArrayList<Client> clientList = new MyArrayList<>();
 
         String sql = "SELECT * FROM client";
         Statement s;
@@ -66,8 +66,8 @@ public class ClientDAOimpl implements ClientDAO {
     }
 
     // need to fix
-    private ArrayList<Account> getAllAssociatedAccounts(int holder_id){
-        ArrayList<Account> ans = new ArrayList<>();
+    private MyArrayList<Account> getAllAssociatedAccounts(int holder_id){
+        MyArrayList<Account> ans = new MyArrayList<>();
 
 
         return null;

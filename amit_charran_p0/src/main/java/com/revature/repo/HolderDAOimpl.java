@@ -2,7 +2,7 @@ package com.revature.repo;
 
 import com.revature.model.Account;
 import com.revature.model.Client;
-import com.revature.util.ArrayList;
+import com.revature.util.MyArrayList;
 import com.revature.util.ConnectionFactory;
 
 import java.sql.*;
@@ -57,8 +57,8 @@ public class HolderDAOimpl implements HolderDAO{
     }
 
     @Override
-    public ArrayList<Client> getAllClients(Account a) {
-        ArrayList<Client> cList = new ArrayList<>();
+    public MyArrayList<Client> getAllClients(Account a) {
+        MyArrayList<Client> cList = new MyArrayList<>();
 
         ClientDAO clientDAO = new ClientDAOimpl();
 

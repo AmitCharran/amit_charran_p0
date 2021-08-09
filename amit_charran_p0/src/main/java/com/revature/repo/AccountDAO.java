@@ -1,6 +1,6 @@
 package com.revature.repo;
 
-import com.revature.util.ArrayList;
+import com.revature.util.MyArrayList;
 import com.revature.model.*;
 
 public interface AccountDAO {
@@ -8,7 +8,7 @@ public interface AccountDAO {
     public void createAccount(Account a);
 
     // Read
-    public ArrayList<Account> returnAllAccounts(Client c);
+    public MyArrayList<Account> returnAllAccounts(Client c);
 
     // Update
     public void changeAccountNumber(Account a);

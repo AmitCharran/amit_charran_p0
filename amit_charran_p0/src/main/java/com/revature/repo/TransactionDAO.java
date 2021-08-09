@@ -1,15 +1,17 @@
 package com.revature.repo;
 
-import com.revature.util.ArrayList;
-import com.revature.model.Transaction;
+import com.revature.util.MyArrayList;
+import com.revature.model.*;
+import com.revature.util.TransactionType;
+
 public interface TransactionDAO {
 
     // Create
     public void createTransaction(Transaction t);
 
     // Read
-    public ArrayList<Transaction> retrieveAllTransactionByUser(String user);
-    public ArrayList<Transaction> retrieveTransactionByTransactionType(String user, String aType);
+    public MyArrayList<Transaction> retrieveAllTransactionByAccount(Account a);
+    public MyArrayList<Transaction> retrieveTransactionByTransactionType(String user, TransactionType aType);
 
     // Update
     // will not update transaction

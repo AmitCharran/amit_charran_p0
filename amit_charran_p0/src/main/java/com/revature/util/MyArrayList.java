@@ -22,7 +22,7 @@ package com.revature.util;
 // V = Value
 // S,U,V etc. - End, 3rd, 4th types
 
-public class ArrayList<T> {
+public class MyArrayList<T> {
     private int capacity;
     private T[] array;
     private int size;
@@ -31,7 +31,7 @@ public class ArrayList<T> {
      * This is the non-arguments constructor
      * It calls the parameterized constructor with the initial capacity of 100
      */
-    public ArrayList(){
+    public MyArrayList(){
         this(100);
     }
 
@@ -42,7 +42,7 @@ public class ArrayList<T> {
      * The array itself is generic type, so whoever creates an instance of this class will have to choose the type.
      * All elements in the array is also set to null since java's default values for number types are 0
      */
-    public ArrayList(int cap){
+    public MyArrayList(int cap){
         capacity = cap; // sets the initial capacity for the ArrayList
         size = 0; // keeps track of the current index of the ArrayList
         array = (T[]) new Object[capacity];

@@ -1,7 +1,7 @@
 package com.revature.repo;
 
 import com.revature.model.*;
-import com.revature.util.ArrayList;
+import com.revature.util.MyArrayList;
 
 public interface ClientDAO {
 
@@ -9,7 +9,7 @@ public interface ClientDAO {
     public void insertNewClient(Client c);
 
     //READ
-    public ArrayList<Client> retrieveAllClients();
+    public MyArrayList<Client> retrieveAllClients();
     public Client retrieveClient(String username);
     public Client retrieveClient(int client_id);
 

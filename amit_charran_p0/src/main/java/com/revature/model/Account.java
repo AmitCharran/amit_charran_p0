@@ -1,6 +1,6 @@
 package com.revature.model;
 import com.revature.util.AccountType;
-import com.revature.util.ArrayList;
+import com.revature.util.MyArrayList;
 
 /**
  * This is the account class for the banking app.
@@ -10,7 +10,7 @@ import com.revature.util.ArrayList;
  * @ Since 2021-08-3
  */
 public class Account implements AccountInterface{
-    private ArrayList<Client> holders;
+    private MyArrayList<Client> holders;
     private int account_id;
     private AccountType type;
     private double balance;
@@ -73,11 +73,11 @@ public class Account implements AccountInterface{
         // update transaction history
     }
 
-    public ArrayList<Client> getHolders() {
+    public MyArrayList<Client> getHolders() {
         return holders;
     }
 
-    public void setHolders(ArrayList<Client> holders) {
+    public void setHolders(MyArrayList<Client> holders) {
         this.holders = holders;
     }
 

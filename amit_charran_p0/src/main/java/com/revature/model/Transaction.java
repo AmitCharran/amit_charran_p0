@@ -2,7 +2,7 @@ package com.revature.model;
 
 import com.revature.util.TransactionType;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Transaction {
     private int transactionID; // get this from SQL table
@@ -19,6 +19,15 @@ public class Transaction {
         type = null;
         transaction_by = -1;
         transfer_to_who = -1;
+    }
+
+    public Transaction(int transactionID, Date date, double transaction_amount, TransactionType type, int transaction_by, int transfer_to_who) {
+        this.transactionID = transactionID;
+        this.date = date;
+        this.transaction_amount = transaction_amount;
+        this.type = type;
+        this.transaction_by = transaction_by;
+        this.transfer_to_who = transfer_to_who;
     }
 
     public int getTransactionID() {
@@ -67,5 +76,9 @@ public class Transaction {
 
     public void setTransfer_to_who(int transfer_to_who) {
         this.transfer_to_who = transfer_to_who;
+    }
+
+    public String toString(){
+        return "" + transactionID + " " + transaction_amount;
     }
 }

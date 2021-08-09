@@ -1,7 +1,7 @@
 package com.revature.model;
 import com.revature.repo.ClientDAO;
 import com.revature.repo.ClientDAOimpl;
-import com.revature.util.ArrayList;
+import com.revature.util.MyArrayList;
 
 /**
  * This class is for my banking application. This is how I keep the clients information.
@@ -15,14 +15,14 @@ public class Client implements ClientInterface{
     String username;
     String password;
     int clientID;
-    ArrayList<Account> accounts;
+    MyArrayList<Account> accounts;
 
     public Client(){
         // generate client ID
-        accounts = new ArrayList<>();
+        accounts = new MyArrayList<>();
     }
 
-    public Client(String firstName, String lastName, String username, String password, int clientID, ArrayList<Account> accounts) {
+    public Client(String firstName, String lastName, String username, String password, int clientID, MyArrayList<Account> accounts) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -95,11 +95,11 @@ public class Client implements ClientInterface{
         this.clientID = clientID;
     }
 
-    public ArrayList<Account> getAccounts() {
+    public MyArrayList<Account> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(ArrayList<Account> accounts) {
+    public void setAccounts(MyArrayList<Account> accounts) {
         this.accounts = accounts;
     }
 

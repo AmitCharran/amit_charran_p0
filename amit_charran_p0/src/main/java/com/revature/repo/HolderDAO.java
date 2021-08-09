@@ -2,7 +2,7 @@ package com.revature.repo;
 
 import com.revature.model.Account;
 import com.revature.model.Client;
-import com.revature.util.ArrayList;
+import com.revature.util.MyArrayList;
 
 public interface HolderDAO {
 
@@ -10,7 +10,7 @@ public interface HolderDAO {
     public void createHolder(Account a);
 
     // Read
-    public ArrayList<Client> getAllClients(Account a);
+    public MyArrayList<Client> getAllClients(Account a);
 
     // Update
     public void insertNewClient(Account a, Client c);
