@@ -10,15 +10,16 @@ import com.revature.util.MyArrayList;
  * @ Since 2021-08-3
  */
 public class Account implements AccountInterface{
-    private MyArrayList<Client> holders;
+
     private int account_id;
+    private String accountNumber; // account numbers need to be handled somehow
+    // Most likely with SQL
     private AccountType type;
     private double balance;
-    private String accountNumber; // account numbers need to be handled somehow
-                        // Most likely with SQL
+
     // Need to add a transactionHistory ArrayList
-
-
+    private MyArrayList<Client> holders;
+    public Account(){}
     /**
      * Non-parameterized constructor.
      * Calls the one parameter constructor with balance of 0
@@ -31,6 +32,14 @@ public class Account implements AccountInterface{
         this.type = type;
         this.balance = balance;
         // add function to create accountNumber appropriately
+    }
+
+    public Account(int account_id, String accountNumber, AccountType type, double balance, MyArrayList<Client> holders) {
+        this.account_id = account_id;
+        this.accountNumber = accountNumber;
+        this.type = type;
+        this.balance = balance;
+        this.holders = holders;
     }
 
     /**

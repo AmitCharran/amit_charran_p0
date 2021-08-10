@@ -98,6 +98,78 @@ public class HolderDAOimpl implements HolderDAO{
         return cList;
     }
 
+    public MyArrayList<Client> getAllClientsWithAccID(int accID) {
+        MyArrayList<Client> cList = new MyArrayList<>();
+
+        ClientDAO clientDAO = new ClientDAOimpl();
+
+        int holderID = this.getHolderID(accID);
+        String sql = "SELECT * FROM holder WHERE holder_id = ?";
+
+        int[] clients = new int[5];
+        for(int i = 0; i < clients.length; i++){
+            clients[i] = 0;
+        }
+
+        try(Connection connection = ConnectionFactory.getConnection()){
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, (holderID));
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                clients[0] = rs.getInt(3);
+                clients[1] = rs.getInt(4);
+                clients[2] = rs.getInt(5);
+                clients[3] = rs.getInt(6);
+                clients[4]= rs.getInt(7);
+            }
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        for(int i = 0; i < clients.length; i++){
+            if(clients[i] != 0){
+                cList.add(clientDAO.retrieveClient(clients[i]));
+            }
+        }
+
+        return cList;
+    }
+
+
+    @Override
+    public MyArrayList<Integer> findAllClientAccountID(Client c) {
+        MyArrayList<Integer> ans = new MyArrayList<>();
+        int client_id = new ClientDAOimpl().retrieveClient(c.getUsername()).getClientID();
+        String sql = "SELECT account_id FROM holder WHERE " +
+                "client_one = ? OR client_two = ? OR client_three = ? OR client_four = ? OR client_five = ?";
+
+        PreparedStatement ps;
+
+        try(Connection connection =ConnectionFactory.getConnection()){
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, client_id);
+            ps.setInt(2, client_id);
+            ps.setInt(3, client_id);
+            ps.setInt(4, client_id);
+            ps.setInt(5, client_id);
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                ans.append(rs.getInt("account_id"));
+            }
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return ans;
+
+    }
+
     @Override
     public void insertNewClient(Account a, Client c) {
         int accountID = new AccountDAOimpl().retrieveAccountID(a);

@@ -11,7 +11,7 @@ public interface AccountDAO {
     public MyArrayList<Account> returnAllAccounts(Client c);
 
     // Update
-    public void changeAccountNumber(Account a);
+    public void changeAccountNumber(Account a, String new_num);
     public void assignUserToAccount(Account a, Client c);
     public void withdraw(Account a, double money);
     public void deposit(Account a, double money);

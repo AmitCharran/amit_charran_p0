@@ -2,8 +2,10 @@ package com.revature.repo;
 
 import com.revature.model.Account;
 import com.revature.model.Client;
+import com.revature.util.AccountType;
 import com.revature.util.MyArrayList;
 import com.revature.util.ConnectionFactory;
+import com.revature.util.TransactionType;
 
 import java.sql.*;
 
@@ -41,11 +43,6 @@ public class AccountDAOimpl implements AccountDAO {
         }catch (SQLException e){
             e.printStackTrace();
         }
-
-
-
-
-
     }
 
     public int retrieveAccountID(Account a){
@@ -75,14 +72,49 @@ public class AccountDAOimpl implements AccountDAO {
 
     }
 
+    public Account retrieveAccount(int accountID){
+        Account acc = new Account();
+        String sql = "SELECT * FROM account WHERE account_id = ?";
+        PreparedStatement ps;
+
+        try(Connection connection = ConnectionFactory.getConnection()){
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, accountID);
+            ResultSet rs = ps.executeQuery(sql);
+
+            while(rs.next()){
+                acc.setAccount_id(rs.getInt(1));
+                acc.setAccountNumber(rs.getString(2));
+                acc.setType(AccountType.valueOf(rs.getString(3)));
+                acc.setBalance(rs.getDouble(4));
+                acc.setHolders(new HolderDAOimpl().getAllClientsWithAccID(accountID));
+            }
+
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return acc;
+    }
+
     @Override
     public MyArrayList<Account> returnAllAccounts(Client c) {
+        MyArrayList<Integer> accountIDs = new HolderDAOimpl().findAllClientAccountID(c);
+        MyArrayList<Account> ans = new MyArrayList<>();
+
+        for(int i = 0; i < accountIDs.size(); i++){
+
+        }
+
+
+
         return null;
     }
 
     @Override
-    public void changeAccountNumber(Account a) {
-        String sql = "UPDATE account SET account_number = " + a.getAccountNumber() + " WHERE account_id = " + a.getAccount_id();
+    public void changeAccountNumber(Account a, String new_num) {
+        String sql = "UPDATE account SET account_number = " + new_num + " WHERE account_id = " + a.getAccount_id();
         Statement s;
         try(Connection connection = ConnectionFactory.getConnection()){
             s = connection.createStatement();
@@ -94,7 +126,7 @@ public class AccountDAOimpl implements AccountDAO {
 
     @Override
     public void assignUserToAccount(Account a, Client c) {
-        // maybe make this boolean because account can only have 5 users
+       new HolderDAOimpl().insertNewClient(a,c);
     }
 
     @Override

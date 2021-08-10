@@ -11,7 +11,7 @@ public interface TransactionDAO {
 
     // Read
     public MyArrayList<Transaction> retrieveAllTransactionByAccount(Account a);
-    public MyArrayList<Transaction> retrieveTransactionByTransactionType(String user, TransactionType aType);
+    public MyArrayList<Transaction> retrieveTransactionByTransactionType(Account a, TransactionType aType);
 
     // Update
     // will not update transaction

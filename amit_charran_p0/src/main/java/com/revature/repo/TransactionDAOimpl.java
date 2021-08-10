@@ -70,7 +70,40 @@ public class TransactionDAOimpl implements TransactionDAO{
     }
 
     @Override
-    public MyArrayList<Transaction> retrieveTransactionByTransactionType(String user, TransactionType aType) {
-        return null;
+    public MyArrayList<Transaction> retrieveTransactionByTransactionType(Account a, TransactionType aType) {
+        MyArrayList<Transaction> ans = new MyArrayList<>();
+        int accountID = new AccountDAOimpl().retrieveAccountID(a);
+
+        String sql = "SELECT * FROM bank_transaction WHERE transaction_by = ? and transaction_type = ?";
+        PreparedStatement ps;
+        try(Connection connection = ConnectionFactory.getConnection()){
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1,accountID);
+            ps.setString(2,aType.toString());
+
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                ans.append(
+                        new Transaction(
+                                rs.getInt(1),
+                                rs.getDate(2),
+                                rs.getInt(3),
+                                TransactionType.valueOf(rs.getString(4)),
+                                rs.getInt(5),
+                                rs.getInt(6)
+
+                        )
+                );
+
+            }
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return ans;
     }
+
 }

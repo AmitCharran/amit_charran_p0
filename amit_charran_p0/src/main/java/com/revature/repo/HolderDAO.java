@@ -11,6 +11,7 @@ public interface HolderDAO {
 
     // Read
     public MyArrayList<Client> getAllClients(Account a);
+    public MyArrayList<Integer> findAllClientAccountID(Client c);
 
     // Update
     public void insertNewClient(Account a, Client c);
