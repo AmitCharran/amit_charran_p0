@@ -1,10 +1,14 @@
 
 import com.revature.model.Client;
+import com.revature.repo.AccountDAO;
+import com.revature.service.AccountService;
+import com.revature.service.AccountServiceImpl;
 
 import java.util.Scanner;
 
 public class Driver {
     private static final Scanner sc = new Scanner(System.in);
+    private static AccountService account = new AccountServiceImpl();
     public static void main(String[] args) {
 
         // need a postgres sql driver
