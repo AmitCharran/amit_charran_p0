@@ -12,7 +12,7 @@ public interface HolderDAO {
     // Read
     public MyArrayList<Client> getAllClients(Account a);
     public MyArrayList<Integer> findAllClientAccountID(Client c);
-
+    public int getHolderID(int accountID);
     // Update
     public void insertNewClient(Account a, Client c);
     public void removeAClient(Account a, Client c);

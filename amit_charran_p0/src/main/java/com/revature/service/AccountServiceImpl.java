@@ -7,7 +7,7 @@ import com.revature.repo.AccountDAOimpl;
 import com.revature.util.MyArrayList;
 
 public class AccountServiceImpl implements AccountService{
-    AccountDAO aDAO = new AccountDAOimpl();
+   private AccountDAO aDAO = new AccountDAOimpl();
 
     @Override
     public void createAccount(Account a) {
