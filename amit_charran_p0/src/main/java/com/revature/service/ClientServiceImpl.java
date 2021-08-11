@@ -29,6 +29,15 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
+    public boolean checkClientUsername(String username) {
+        if(retrieveClient(username) == null){
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
     public void updateFirstName(Client c, String firstName) {
         clientDAO.updateFirstName(c,firstName);
     }

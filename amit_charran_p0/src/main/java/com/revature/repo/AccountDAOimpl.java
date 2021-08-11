@@ -58,13 +58,6 @@ public class AccountDAOimpl implements AccountDAO {
             }
             a.setAccount_id(ans);
 
-
-//            // here I want to get
-//            HolderDAO h = new HolderDAOimpl();
-//            h.createHolder(a);
-
-
-
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -72,6 +65,7 @@ public class AccountDAOimpl implements AccountDAO {
 
     }
 
+    @Override
     public Account retrieveAccount(int accountID){
         Account acc = new Account();
         String sql = "SELECT * FROM account WHERE account_id = ?";
@@ -80,7 +74,7 @@ public class AccountDAOimpl implements AccountDAO {
         try(Connection connection = ConnectionFactory.getConnection()){
             ps = connection.prepareStatement(sql);
             ps.setInt(1, accountID);
-            ResultSet rs = ps.executeQuery(sql);
+            ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
                 acc.setAccount_id(rs.getInt(1));
@@ -99,17 +93,34 @@ public class AccountDAOimpl implements AccountDAO {
     }
 
     @Override
+    public boolean accNumberExist(String accNum){
+        String sql = "SELECT * FROM account WHERE account_number = ?";
+        PreparedStatement ps;
+        try(Connection connection = ConnectionFactory.getConnection()){
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, accNum);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                return true;
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
     public MyArrayList<Account> returnAllAccounts(Client c) {
         MyArrayList<Integer> accountIDs = new HolderDAOimpl().findAllClientAccountID(c);
         MyArrayList<Account> ans = new MyArrayList<>();
 
         for(int i = 0; i < accountIDs.size(); i++){
-
+            ans.append(retrieveAccount(accountIDs.get(i)));
         }
-
-
-
-        return null;
+        return ans;
     }
 
     @Override
@@ -132,7 +143,7 @@ public class AccountDAOimpl implements AccountDAO {
     @Override
     public void withdraw(Account a, double money) {
         a.withdraw(money);
-        String sql = "UPDATE account SET money = " + a.getBalance() + " WHERE account_id = " + a.getAccount_id();
+        String sql = "UPDATE account SET balance = " + a.getBalance() + " WHERE account_id = " + a.getAccount_id();
         Statement s;
         try(Connection connection = ConnectionFactory.getConnection()){
             s = connection.createStatement();
@@ -145,7 +156,7 @@ public class AccountDAOimpl implements AccountDAO {
     @Override
     public void deposit(Account a, double money) {
         a.deposit(money);
-        String sql = "UPDATE account SET money = " + a.getBalance() + " WHERE account_id = " + a.getAccount_id();
+        String sql = "UPDATE account SET balance = " + a.getBalance() + " WHERE account_id = " + a.getAccount_id();
         Statement s;
         try(Connection connection = ConnectionFactory.getConnection()){
             s = connection.createStatement();

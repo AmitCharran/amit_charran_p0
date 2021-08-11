@@ -15,6 +15,10 @@ public class AccountServiceImpl implements AccountService{
 
     }
 
+    public Account retrieveAccount(int accountID){
+        return aDAO.retrieveAccount(accountID);
+    }
+
     @Override
     public MyArrayList<Account> getAllAccounts(Client c) {
         return aDAO.returnAllAccounts(c);
@@ -23,6 +27,11 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public void changeAccountNumber(Account a, String new_num) {
         aDAO.changeAccountNumber(a,new_num);
+    }
+
+    @Override
+    public boolean accNumExist(String accNum) {
+        return aDAO.accNumberExist(accNum);
     }
 
     @Override
@@ -38,7 +47,7 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public void deposit(Account a, double money) {
-        new AccountDAOimpl().withdraw(a,money);
+        new AccountDAOimpl().deposit(a,money);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.revature.model;
 
+import com.revature.service.AccountServiceImpl;
+import com.revature.service.ClientServiceImpl;
 import com.revature.util.TransactionType;
 
 import java.sql.Date;
@@ -19,6 +21,14 @@ public class Transaction {
         type = null;
         transaction_by = -1;
         transfer_to_who = -1;
+    }
+
+    public Transaction(Date date, double transaction_amount, TransactionType type, int transaction_by, int transfer_to_who) {
+        this.date = date;
+        this.transaction_amount = transaction_amount;
+        this.type = type;
+        this.transaction_by = transaction_by;
+        this.transfer_to_who = transfer_to_who;
     }
 
     public Transaction(int transactionID, Date date, double transaction_amount, TransactionType type, int transaction_by, int transfer_to_who) {
@@ -79,6 +89,16 @@ public class Transaction {
     }
 
     public String toString(){
-        return "" + transactionID + " " + transaction_amount;
+        String ans = "";
+        if(transaction_by == transfer_to_who){
+            ans =   "Transaction Date: " + date.toString() +
+                    "\nTransaction Amount: " + type.toString() + " $" + transaction_amount;
+        }else{
+            ans =   "Transaction Date: " + date.toString() +
+                    "\nTransaction Amount: " + type.toString() + " $" + transaction_amount  +
+                    "\nTransfer from " + (new AccountServiceImpl().retrieveAccount(transaction_by).getAccountNumber()) +
+                    " to " + (new AccountServiceImpl().retrieveAccount(transfer_to_who).getAccountNumber());
+        }
+        return ans;
     }
 }

@@ -1,4 +1,7 @@
 package com.revature.model;
+import com.revature.repo.AccountDAOimpl;
+import com.revature.service.AccountService;
+import com.revature.service.AccountServiceImpl;
 import com.revature.util.AccountType;
 import com.revature.util.MyArrayList;
 
@@ -19,7 +22,11 @@ public class Account implements AccountInterface{
 
     // Need to add a transactionHistory ArrayList
     private MyArrayList<Client> holders;
-    public Account(){}
+    public Account(){
+        type = null;
+        generateAccountNumber();
+        balance = 0;
+    }
     /**
      * Non-parameterized constructor.
      * Calls the one parameter constructor with balance of 0
@@ -27,10 +34,12 @@ public class Account implements AccountInterface{
      */
     public Account(AccountType type){
         this(type, 0);
+        generateAccountNumber();
     }
     public Account(AccountType type, double balance){
         this.type = type;
         this.balance = balance;
+        generateAccountNumber();
         // add function to create accountNumber appropriately
     }
 
@@ -57,14 +66,14 @@ public class Account implements AccountInterface{
         // update transaction history
     }
 
-    private boolean validForWithdraw(double n){
+    public boolean validForWithdraw(double n){
         if(n > this.balance || n < 0){
             return false;
         }
         return true;
 
     }
-    private boolean validForDeposit(double n){
+    public boolean validForDeposit(double n){
         if(n < 0){
             return false;
         }
@@ -80,6 +89,25 @@ public class Account implements AccountInterface{
 
         balance = balance + n;
         // update transaction history
+    }
+
+    public void generateAccountNumber(){
+        boolean accountNumberExist = true;
+        StringBuilder accNum = new StringBuilder();
+        AccountService as = new AccountServiceImpl();
+
+        while(accountNumberExist){
+            for(int i = 0; i < 16; i++){
+                accNum.append( (int)((Math.random() * 100) % 10));
+            }
+
+            String accNumber = accNum.toString();
+            if(!as.accNumExist(accNumber)){
+                accountNumberExist = false;
+            }
+        }
+
+        accountNumber = accNum.toString();
     }
 
     public MyArrayList<Client> getHolders() {
@@ -122,5 +150,9 @@ public class Account implements AccountInterface{
         this.accountNumber = accountNumber;
     }
 
-    // Create View Accounts Method
+    public String toString(){
+        return "Account Number : " + accountNumber +
+                "\nAccount Type : " + type +
+                "\nBalance : $" + balance;
+    }
 }

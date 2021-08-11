@@ -193,6 +193,13 @@ public class HolderDAOimpl implements HolderDAO{
                         ps.setInt(1, c1.getClientID());
                         ps.setInt(2,holderID);
                         ps.execute();
+
+
+                        String sql3 = "UPDATE client SET holder_id = ? WHERE client_id = ?";
+                        ps = connection.prepareStatement(sql3);
+                        ps.setInt(1,holderID);
+                        ps.setInt(2, c1.getClientID());
+                        ps.execute();
                         break;
                     }
 

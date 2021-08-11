@@ -11,6 +11,7 @@ public interface ClientService {
     public MyArrayList<Client> retrieveAllClients();
     public Client retrieveClient(String username);
     public Client retrieveClient(int client_id);
+    public boolean checkClientUsername(String username);
 
     //UPDATE
     public void updateFirstName(Client c, String firstName);
