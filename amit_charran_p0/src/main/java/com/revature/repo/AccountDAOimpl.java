@@ -10,6 +10,7 @@ import com.revature.util.TransactionType;
 import java.sql.*;
 
 public class AccountDAOimpl implements AccountDAO {
+
     @Override
     public void createAccount(Account a) {
          String sql = "INSERT INTO account (account_number, account_type, balance) values (?, ?, ?)";
@@ -45,6 +46,11 @@ public class AccountDAOimpl implements AccountDAO {
         }
     }
 
+    /**
+     * returns account_id when given an account
+     * @param a Object from account class, but uses only account number from that class for this
+     * @return int - account_id number from table
+     */
     public int retrieveAccountID(Account a){
         String sql = "SELECT account_id FROM account WHERE account_number = \'"+ a.getAccountNumber()+"\'";
         Statement s;

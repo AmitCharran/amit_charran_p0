@@ -7,12 +7,20 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * This file is used to connect to our data base.
+ * It utilizes a properties file to access out database.
+ */
 public class ConnectionFactory {
 
     private static Connection connection;
     private static Properties properties;
     private static InputStream input;
 
+    /**
+     * provides a way for us to connect to our database without tediously rewriting code
+     * @return connection with credentials to access the database
+     */
     public static Connection getConnection(){
         properties = new Properties();
 
