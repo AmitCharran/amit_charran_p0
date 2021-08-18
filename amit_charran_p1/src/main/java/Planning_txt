@@ -24,6 +24,15 @@ Hibernate Cache
 // Create ORM
     // ORM Interface -- Given a class
         // CRUD Methods
+        Create Table
+
+        Select * From Table
+        Select Column from table where condition <-- this will take a minute
+
+        Update
+
+        Delete
+
 
 
 
