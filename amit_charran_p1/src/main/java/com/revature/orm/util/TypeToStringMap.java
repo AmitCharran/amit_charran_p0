@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 public class TypeToStringMap {
 
@@ -27,7 +28,7 @@ public class TypeToStringMap {
             if(f.getType() == Integer.TYPE){
                 ans.put(f.getType(), "int");
             }else if(f.getType() == Double.TYPE){
-                ans.put(f.getType(), "double percision");
+                ans.put(f.getType(), "double precision");
             }else if(f.getType().equals(String.class)){
                 ans.put(f.getType(), "varchar (50)");
             }else if(f.getType().equals(Date.class)){
@@ -35,6 +36,16 @@ public class TypeToStringMap {
             }
         }
         return ans;
+    }
+
+    public HashMap<String, Type> reversedMapStringToDataType(){
+        HashMap<Type, String> normal = dataTypeToStringConversion();
+        HashMap<String, Type> reversed = new HashMap<>();
+
+        for(Map.Entry<Type, String> entry: normal.entrySet() ){
+            reversed.put(entry.getValue(), entry.getKey());
+        }
+        return reversed;
     }
 
 }

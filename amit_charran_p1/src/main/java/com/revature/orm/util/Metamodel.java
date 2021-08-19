@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Makes sure annotations on classes are correct
@@ -33,7 +34,7 @@ public class Metamodel<T> {
      */
     public static <T> Metamodel<T> of(Class<T> clazz) {
         if (clazz.getAnnotation(Entity.class) == null) {
-            throw new IllegalStateException("Cannot create Metamodel object! Provided class, " + clazz.getName() + "is not annotated with @Entity");
+            throw new IllegalStateException("Cannot create Metamodel object! Provided class, " + clazz.getName() + " is not annotated with @Entity");
         }
         return new Metamodel<>(clazz);
     }
@@ -50,11 +51,11 @@ public class Metamodel<T> {
     }
 
     public String getClassName() {
-        return clazz.getName();
+        return clazz.getName().toLowerCase(Locale.ROOT);
     }
 
     public String getSimpleClassName() {
-        return clazz.getSimpleName();
+        return clazz.getSimpleName().toLowerCase(Locale.ROOT);
     }
 
     /**

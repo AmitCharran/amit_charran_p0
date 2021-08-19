@@ -1,6 +1,7 @@
 package com.revature.orm.util;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -11,7 +12,7 @@ import java.util.Properties;
 
 public class ConnectionUtil {
     private static Connection connection;
-    final static Logger logger = Logger.getLogger(ConnectionUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConnectionUtil.class);
 
     /**
      * provides a way for us to connect to our database without tediously rewriting code

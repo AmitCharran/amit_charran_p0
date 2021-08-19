@@ -20,6 +20,7 @@ public class ColumnField {
         this.field = field;
     }
 
+
     public String getName() {return field.getName();}
     public Class<?> getType(){return field.getType();}
     public String getColumnName(){

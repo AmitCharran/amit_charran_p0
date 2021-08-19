@@ -1,11 +1,12 @@
 package com.revature.orm.util;
 
 import org.apache.log4j.*;
+import org.slf4j.LoggerFactory;
 
 
 public class LoggingConfig {
 
-    final static Logger logger = Logger.getLogger(LoggingConfig.class);
+    final static Logger logger = (Logger) LoggerFactory.getLogger(LoggingConfig.class);
 
 
     public static void main(String[] args){
@@ -36,6 +37,7 @@ public class LoggingConfig {
         Logger.getRootLogger().addAppender(fileAppender);
 
 
+        logger.warn("test");
 
     }
 
