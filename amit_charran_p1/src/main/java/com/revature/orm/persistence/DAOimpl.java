@@ -7,9 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class DAOimpl implements DAO{
 
@@ -158,33 +161,69 @@ public class DAOimpl implements DAO{
 
     @Override
     public List<Object> getAll(Class clazz) {
+        if(!hasNoArgConstructor(clazz)){
+            logger.warn("Class does not have no Arg constructor. Cannot continue" +
+                    "\nclass name: " + clazz.getSimpleName());
+            return null;
+        }
+
         Metamodel mm = new Metamodel(clazz);
 
         String selectAll = "SELECT * FROM " + mm.getSimpleClassName();
         List<String> allColumnNames = getColumnNames(clazz).get();
         List<String> allColumnTypes = getAllColumnTypes(clazz).get();
+        List<Method> allMethods = mm.getDeclaredMethods();
+        HashMap<String,Type> reversedMap = new TypeToStringMap().reversedMapStringToDataType();
+        mm.getSetMethods();
+
+
 
         ResultSet rs;
         Statement s;
+        ResultSetMetaData rsmd;
+
+
+
         try(Connection connection = ConnectionUtil.getConnection(url,user,pass)){
             s = connection.createStatement();
             rs = s.executeQuery(selectAll);
 
+            // Create Object of Class
+
+
+            Object o = clazz.newInstance();
 
 
             while(rs.next()){
+                for(int i = 0; i < allColumnNames.size(); i++) {
+                   // System.out.println(allMethods.get(i).getName());
 
+                    // make sure type is correct
+                    rsmd = rs.getMetaData();
+
+
+
+                    // set object and make sure it is the right type
+                }
 
             }
 
 
         }catch (SQLException e){
             logger.warn("Cannot create object instance from table " + mm.getSimpleClassName());
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
 
 
-
         return null;
+    }
+    private boolean hasNoArgConstructor(Class<?> clazz) {
+        return Stream.of(clazz.getConstructors())
+                .anyMatch((c) -> c.getParameterCount() == 0);
     }
 
     @Override

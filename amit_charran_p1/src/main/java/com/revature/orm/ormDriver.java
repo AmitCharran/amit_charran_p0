@@ -37,12 +37,12 @@ public class ormDriver {
                 properties.getProperty("username"),
                 properties.getProperty("password"));
         cfg.setSchema("p0");
-        cfg.addAnnotatedClass(Test.class);
+        //cfg.addAnnotatedClass(Test.class);
 
         // now i'm testing for inserting into a table
         //Test a = new Test("one", "two", 3);
-        cfg.insertIntoTable(Test.class, "test1", "test2", 3, 5.34, new Date(System.currentTimeMillis()));
-
+        //cfg.insertIntoTable(Test.class, "test1", "test2", 3, 5.34, new Date(System.currentTimeMillis()));
+        cfg.getAll(Test.class);
 
     }
 }

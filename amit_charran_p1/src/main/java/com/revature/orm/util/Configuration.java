@@ -67,11 +67,11 @@ public class Configuration {
 
     public List<Object> getAll(Class clazz){
 
-        if(dao.tableExists(clazz.getSimpleName().toLowerCase())){
+        if(!dao.tableExists(clazz.getSimpleName().toLowerCase())){
                logger.warn("Table name " + clazz.getSimpleName().toLowerCase() + " does not exist. Cannot retrieve");
         }
 
-        return null;
+        return dao.getAll(clazz);
     }
 
 

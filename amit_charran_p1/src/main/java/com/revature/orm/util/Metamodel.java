@@ -8,10 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Makes sure annotations on classes are correct
@@ -23,6 +22,8 @@ public class Metamodel<T> {
     private IdField primaryKeyField;
     private List<ColumnField> columnFields;
     private List<ForeignKeyField> foreignKeyFields;
+
+
 
     private static final Logger logger = LoggerFactory.getLogger(Metamodel.class);
 
@@ -116,5 +117,25 @@ public class Metamodel<T> {
 
         return foreignKeyFields;
     }
+
+    public List<Method> getDeclaredMethods(){
+        List<Method> ans = new ArrayList<>();
+        Method[] methods = this.clazz.getDeclaredMethods();
+        for(Method m: methods){
+            ans.add(m);
+        }
+        return ans;
+    }
+
+    public List<Method> getSetMethods(){
+        List<Method> ans = new ArrayList<>();
+        Method[] methods = this.clazz.getDeclaredMethods();
+        Stream<Method> setMethods = Arrays.stream(methods)
+                .filter(m -> m.getName().contains("set"));
+
+        setMethods.forEach(s -> System.out.println(s.getName()));
+        return null;
+    }
+
 
 }
