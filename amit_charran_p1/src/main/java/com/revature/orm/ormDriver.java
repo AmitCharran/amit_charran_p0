@@ -19,6 +19,7 @@ public class ormDriver {
     private static Properties properties;
     private static InputStream input;
 
+    final static Logger logger = LoggerFactory.getLogger(ormDriver.class);
 
     public static void main(String[] args) {
 

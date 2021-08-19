@@ -1,5 +1,7 @@
 package com.revature.orm.persistence;
 
+import java.util.List;
+
 public interface DAO {
     // Simple CRUD methods
     // Create
@@ -8,7 +10,8 @@ public interface DAO {
 
 
     // Read
-    public void getById(Object table, int id);
+    public Object getById(Class clazz, int id);
+    public List<Object> getAll(Class clazz);
     public void getOneFromTable(Class<?> table, Object item);
 
     // Update

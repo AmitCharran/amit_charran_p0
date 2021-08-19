@@ -13,6 +13,7 @@ public class TypeToStringMap {
         double d;
         String s;
         Date date;
+        boolean bool;
 
 
         
@@ -33,6 +34,8 @@ public class TypeToStringMap {
                 ans.put(f.getType(), "varchar (50)");
             }else if(f.getType().equals(Date.class)){
                 ans.put(f.getType(), "date");
+            }else if(f.getType().equals(Boolean.TYPE)){
+                ans.put(f.getType(), "boolean");
             }
         }
         return ans;

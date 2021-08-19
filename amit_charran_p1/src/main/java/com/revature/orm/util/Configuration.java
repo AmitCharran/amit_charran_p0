@@ -1,7 +1,10 @@
 package com.revature.orm.util;
 
+import com.revature.orm.ormDriver;
 import com.revature.orm.persistence.DAO;
 import com.revature.orm.persistence.DAOimpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -16,6 +19,8 @@ public class Configuration {
     private String dbPassword;
     private List<Metamodel<Class<?>>> metamodelList;
     private DAOimpl dao;
+
+    final static Logger logger = LoggerFactory.getLogger(Configuration.class);
 
     /**
      * No Args Constructor
@@ -58,6 +63,15 @@ public class Configuration {
         dao.createTable(annotatedClass);
 
         return this; // we're returning the
+    }
+
+    public List<Object> getAll(Class clazz){
+
+        if(dao.tableExists(clazz.getSimpleName().toLowerCase())){
+               logger.warn("Table name " + clazz.getSimpleName().toLowerCase() + " does not exist. Cannot retrieve");
+        }
+
+        return null;
     }
 
 

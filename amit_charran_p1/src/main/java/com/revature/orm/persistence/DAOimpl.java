@@ -13,6 +13,7 @@ import java.util.*;
 
 public class DAOimpl implements DAO{
 
+    final static Logger logger = LoggerFactory.getLogger(DAOimpl.class);
 
 
     private String url;
@@ -151,8 +152,39 @@ public class DAOimpl implements DAO{
     }
 
     @Override
-    public void getById(Object table, int id) {
+    public Object getById(Class clazz, int id) {
+        return null;
+    }
 
+    @Override
+    public List<Object> getAll(Class clazz) {
+        Metamodel mm = new Metamodel(clazz);
+
+        String selectAll = "SELECT * FROM " + mm.getSimpleClassName();
+        List<String> allColumnNames = getColumnNames(clazz).get();
+        List<String> allColumnTypes = getAllColumnTypes(clazz).get();
+
+        ResultSet rs;
+        Statement s;
+        try(Connection connection = ConnectionUtil.getConnection(url,user,pass)){
+            s = connection.createStatement();
+            rs = s.executeQuery(selectAll);
+
+
+
+            while(rs.next()){
+
+
+            }
+
+
+        }catch (SQLException e){
+            logger.warn("Cannot create object instance from table " + mm.getSimpleClassName());
+        }
+
+
+
+        return null;
     }
 
     @Override
