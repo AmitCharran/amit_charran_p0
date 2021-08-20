@@ -26,11 +26,11 @@ public class ormDriver {
 
         properties = new Properties();
         try {
-
+            Class.forName("org.postgresql.Driver");
             input = ormDriver.class.getResourceAsStream("/credentials.properties");
             properties.load(input);
 
-        }catch (IOException e){
+        }catch (IOException | ClassNotFoundException e){
             e.printStackTrace();
         }
         Configuration cfg = new Configuration(
@@ -41,12 +41,12 @@ public class ormDriver {
        // cfg.addAnnotatedClass(Test.class);
 
         // now i'm testing for inserting into a table
-        //Test a = new Test("one", "two", 3);
-        //cfg.insertIntoTable(Test.class, "test3", "test4", 3, 5.34, new Date(System.currentTimeMillis()));
+        // Test a = new Test("one", "two", 3);
+        cfg.insertIntoTable(Test.class, "test3", "test4", 3, 5.34, new Date(System.currentTimeMillis()));
         ArrayList<Object> al = (ArrayList<Object>) cfg.getAll(Test.class);
-        Object o = (Object) cfg.getById(Test.class, 2);
+        Object o = (Object) cfg.getById(Test.class, 7);
 
-        cfg.deleteByID(Test.class, 2);
+        //cfg.deleteByID(Test.class, 2);
         if(o instanceof Test){
             Test x = (Test) o;
             System.out.println(x.getTestField5());

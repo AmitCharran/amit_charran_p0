@@ -6,7 +6,7 @@ public interface DAO {
     // Simple CRUD methods
     // Create
     public void createTable(Class<?> clazz);
-    public void insert(Class<?> clazz, Object o);
+    public void insert(Class<?> clazz, Object ...o);
 
 
     // Read

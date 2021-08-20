@@ -80,61 +80,7 @@ public class Configuration {
 
 
     public void insertIntoTable(Class clazz, Object ...o){
-        if(!dao.tableExists(clazz.getSimpleName().toLowerCase(Locale.ROOT))){
-            throw new IllegalStateException("table does not exists, table name: " + clazz.getClass().getSimpleName());
-        }
-
-        Metamodel mm = new Metamodel(clazz);
-        List<ColumnField> fields = mm.getColumns();
-        Object[] allObjects = o;
-
-
-
-        List<String> columnNames = getColumnNames(clazz);
-        List<String> columnTypes = getColumnTypes(clazz);
-
-        if(allObjects.length != columnNames.size() - 1){
-            // throw exception
-            System.out.println("Parameters do not match");
-            return;
-        }
-
-        HashMap<String,Type> reversedMap = new TypeToStringMap().reversedMapStringToDataType();
-
-        String insertString = "INSERT INTO " + mm.getSimpleClassName() + " (";
-        String columnNamesFormat = "";
-        for(int i = 0; i < columnNames.size(); i++){
-            String s = columnNames.get(i);
-            if(i == 0){
-                continue;
-            }else if(i == columnNames.size() - 1){
-                columnNamesFormat +=  s + ")";
-            }else{
-                columnNamesFormat += s +", ";
-            }
-        }
-
-        insertString += columnNamesFormat + " values (";
-
-
-        columnNamesFormat = "";
-        for(int i =0; i < allObjects.length;i++){
-            if(i == allObjects.length -1){
-                columnNamesFormat += "\'" +  allObjects[i] + "\')";
-            }else{
-                columnNamesFormat += "\'" + allObjects[i] + "\', ";
-            }
-        }
-        insertString += columnNamesFormat;
-        Statement s;
-        try(Connection connection = ConnectionUtil.getConnection(dbURL,dbUsername,dbPassword)){
-            s = connection.createStatement();
-            s.execute(insertString);
-
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
+       dao.insert(clazz, o);
     }
 
     public void deleteByID(Class clazz,int id){
