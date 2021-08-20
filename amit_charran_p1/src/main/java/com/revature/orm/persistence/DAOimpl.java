@@ -107,8 +107,14 @@ public class DAOimpl implements DAO{
 
         HashMap<Type, String> mapTypeToSQLType = new TypeToStringMap().dataTypeToStringConversion();
 
+        String columnType = "varchar (50)";
+        if(mapTypeToSQLType.containsKey(c.getType())){
+           columnType = mapTypeToSQLType.get(c.getType());
+        }
+
+
         String addColumn = "ALTER TABLE " + mm.getSimpleClassName()
-                            + " ADD COLUMN " + c.getName() + " " + mapTypeToSQLType.get(c.getType());
+                            + " ADD COLUMN " + c.getName() + " " + columnType;
 
         Statement s;
         try(Connection connection = ConnectionUtil.getConnection(url, user, pass)){
@@ -158,6 +164,71 @@ public class DAOimpl implements DAO{
         Metamodel mm = new Metamodel(clazz);
         List<ColumnField> fields = mm.getColumns();
         Object[] allObjects = o;
+
+
+
+        List<String> columnNames = getColumnNames(clazz).get();
+        List<String> columnTypes = getAllColumnTypes(clazz).get();
+
+        if(allObjects.length != columnNames.size() - 1){
+            // throw exception
+            System.out.println("Parameters do not match");
+            return;
+        }
+
+        HashMap<String,Type> reversedMap = new TypeToStringMap().reversedMapStringToDataType();
+
+        String insertString = "INSERT INTO " + mm.getSimpleClassName() + " (";
+        String columnNamesFormat = "";
+        for(int i = 0; i < columnNames.size(); i++){
+            String s = columnNames.get(i);
+            if(i == 0){
+                continue;
+            }else if(i == columnNames.size() - 1){
+                columnNamesFormat +=  s + ")";
+            }else{
+                columnNamesFormat += s +", ";
+            }
+        }
+
+        insertString += columnNamesFormat + " values (";
+
+
+        columnNamesFormat = "";
+        for(int i =0; i < allObjects.length;i++){
+            if(i == allObjects.length -1){
+                columnNamesFormat += "\'" +  allObjects[i] + "\')";
+            }else{
+                columnNamesFormat += "\'" + allObjects[i] + "\', ";
+            }
+        }
+        insertString += columnNamesFormat;
+        Statement s;
+        try(Connection connection = ConnectionUtil.getConnection(url,user,pass)){
+            s = connection.createStatement();
+            s.execute(insertString);
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void insert(Class<?> clazz) {
+        if(!tableExists(clazz.getSimpleName().toLowerCase(Locale.ROOT))){
+            throw new IllegalStateException("table does not exists, table name: " + clazz.getClass().getSimpleName());
+        }
+
+        Metamodel mm = new Metamodel(clazz);
+        List<ColumnField> fields = mm.getColumns();
+
+        // get all from clazz
+        Object[] allObjects = new Object[fields.size()];
+
+        for(int i =0; i < allObjects.length; i++){
+            Object value = fields.get(i).getField().get();
+        }
+
 
 
 
