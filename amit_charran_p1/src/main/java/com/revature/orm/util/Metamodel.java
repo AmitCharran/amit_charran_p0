@@ -4,6 +4,7 @@ import com.revature.orm.annotations.Column;
 import com.revature.orm.annotations.Entity;
 import com.revature.orm.annotations.Id;
 import com.revature.orm.annotations.JoinColumn;
+import com.revature.orm.persistence.DAOimpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -127,14 +128,14 @@ public class Metamodel<T> {
         return ans;
     }
 
-    public List<Method> getSetMethods(){
-        List<Method> ans = new ArrayList<>();
+    public List<Method> getSetMethodsUnsorted(){
         Method[] methods = this.clazz.getDeclaredMethods();
         Stream<Method> setMethods = Arrays.stream(methods)
                 .filter(m -> m.getName().contains("set"));
 
-        setMethods.forEach(s -> System.out.println(s.getName()));
-        return null;
+        List<Method> unsorted = new ArrayList<>();
+        setMethods.forEach(s -> unsorted.add(s));
+        return unsorted;
     }
 
 

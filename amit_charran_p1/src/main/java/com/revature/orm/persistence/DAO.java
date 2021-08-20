@@ -12,11 +12,11 @@ public interface DAO {
     // Read
     public Object getById(Class clazz, int id);
     public List<Object> getAll(Class clazz);
-    public void getOneFromTable(Class<?> table, Object item);
 
     // Update
 
     // Delete
+    public void removeById(Class clazz, int id);
 
 
 }

@@ -74,6 +74,10 @@ public class Configuration {
         return dao.getAll(clazz);
     }
 
+    public Object getById(Class clazz, int id){
+        return dao.getById(clazz, id);
+    }
+
 
     public void insertIntoTable(Class clazz, Object ...o){
         if(!dao.tableExists(clazz.getSimpleName().toLowerCase(Locale.ROOT))){
@@ -131,8 +135,10 @@ public class Configuration {
         }catch (SQLException e){
             e.printStackTrace();
         }
+    }
 
-
+    public void deleteByID(Class clazz,int id){
+        dao.removeById(clazz, id);
     }
 
     public List<String> getColumnNames(Class clazz){

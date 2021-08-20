@@ -48,7 +48,7 @@ public class DAOimpl implements DAO{
     private void addPrimaryKey(Metamodel mm, IdField id){
         HashMap<Type, String> mapTypeToSQLType = new TypeToStringMap().dataTypeToStringConversion();
         String addKey = "ALTER TABLE " + mm.getSimpleClassName()
-                + " ADD COLUMN " + id.getColumnName() + " " + mapTypeToSQLType.get(id.getType()) +
+                + " ADD COLUMN " + id.getName() + " " + mapTypeToSQLType.get(id.getType()) +
                 " GENERATED ALWAYS AS IDENTITY";
 
         Statement s;
@@ -156,7 +156,53 @@ public class DAOimpl implements DAO{
 
     @Override
     public Object getById(Class clazz, int id) {
-        return null;
+        if(!hasNoArgConstructor(clazz)){
+            logger.warn("Class does not have no Arg constructor. Cannot continue" +
+                    "\nclass name: " + clazz.getSimpleName());
+            return null;
+        }
+        Metamodel mm = new Metamodel(clazz);
+
+
+        List<String> allColumnNames = getColumnNames(clazz).get();
+        List<Method> unsortedSet= mm.getSetMethodsUnsorted();
+
+        List<Method> sortedSet = sortUnsortedSet(allColumnNames, unsortedSet);
+
+        ResultSet rs;
+        Statement s;
+        String selectAll = "SELECT * FROM " + mm.getSimpleClassName() + " WHERE " + allColumnNames.get(0) + " = " + id;
+        Object o = null;
+
+        try(Connection connection = ConnectionUtil.getConnection(url,user,pass)){
+            s = connection.createStatement();
+            rs = s.executeQuery(selectAll);
+
+
+
+            while(rs.next()){
+                o = clazz.newInstance();
+                for(int i = 0; i < allColumnNames.size(); i++) {
+                    // make sure type is correct
+                    Object oToSet = rs.getObject(allColumnNames.get(i));
+                    sortedSet.get(i).invoke(o, oToSet);
+                    // set object and make sure it is the right type
+                }
+            }
+
+        }catch (SQLException e){
+            logger.warn("Cannot create object instance from table " + mm.getSimpleClassName());
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        return o;
+
     }
 
     @Override
@@ -171,43 +217,30 @@ public class DAOimpl implements DAO{
 
         String selectAll = "SELECT * FROM " + mm.getSimpleClassName();
         List<String> allColumnNames = getColumnNames(clazz).get();
-        List<String> allColumnTypes = getAllColumnTypes(clazz).get();
-        List<Method> allMethods = mm.getDeclaredMethods();
-        HashMap<String,Type> reversedMap = new TypeToStringMap().reversedMapStringToDataType();
-        mm.getSetMethods();
+        List<Method> unsortedSet= mm.getSetMethodsUnsorted();
 
-
+        List<Method> sortedSet = sortUnsortedSet(allColumnNames, unsortedSet);
 
         ResultSet rs;
         Statement s;
-        ResultSetMetaData rsmd;
-
-
+        ArrayList<Object> allObject = new ArrayList<>();
 
         try(Connection connection = ConnectionUtil.getConnection(url,user,pass)){
             s = connection.createStatement();
             rs = s.executeQuery(selectAll);
 
-            // Create Object of Class
-
-
-            Object o = clazz.newInstance();
-
+            Object o = null;
 
             while(rs.next()){
+                o = clazz.newInstance();
                 for(int i = 0; i < allColumnNames.size(); i++) {
-                   // System.out.println(allMethods.get(i).getName());
-
                     // make sure type is correct
-                    rsmd = rs.getMetaData();
-
-
-
+                    Object oToSet = rs.getObject(allColumnNames.get(i));
+                    sortedSet.get(i).invoke(o, oToSet);
                     // set object and make sure it is the right type
                 }
-
+                allObject.add(o);
             }
-
 
         }catch (SQLException e){
             logger.warn("Cannot create object instance from table " + mm.getSimpleClassName());
@@ -216,18 +249,52 @@ public class DAOimpl implements DAO{
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
 
 
-        return null;
+        return allObject;
     }
+
+    @Override
+    public void removeById(Class clazz, int id) {
+        Metamodel mm = new Metamodel(clazz);
+        List<String> columnNames = getColumnNames(clazz).get();
+
+        String delete = "DELETE FROM " + mm.getSimpleClassName()
+                + " WHERE " + columnNames.get(0) + " = " + id;
+
+        Statement s;
+        try(Connection connection = ConnectionUtil.getConnection(url,user,pass)){
+            s = connection.createStatement();
+            s.execute(delete);
+        }catch (SQLException e){
+            logger.warn("Cannot Delete " + id + " from table " + mm.getSimpleClassName());
+        }
+
+
+    }
+
+    private List<Method> sortUnsortedSet(List<String> allColumnNames, List<Method> unsortedSet) {
+        List<Method> sortedSet = new ArrayList<>();
+        for(int i =0; i < allColumnNames.size(); i++){
+            String colName = allColumnNames.get(i);
+            for(int j = 0; j < unsortedSet.size(); j++){
+                String methName= unsortedSet.get(j).getName().toLowerCase(Locale.ROOT);
+                if(methName.contains(colName)){
+                    sortedSet.add(unsortedSet.get(j));
+                    break;
+                }
+            }
+        }
+        return sortedSet;
+    }
+
     private boolean hasNoArgConstructor(Class<?> clazz) {
         return Stream.of(clazz.getConstructors())
                 .anyMatch((c) -> c.getParameterCount() == 0);
     }
 
-    @Override
-    public void getOneFromTable(Class<?> table, Object item) {
 
-    }
 }

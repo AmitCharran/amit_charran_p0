@@ -74,4 +74,8 @@ public class Test {
 	public void setTestField5(Date testField5) {
 		this.testField5 = testField5;
 	}
+
+	public String toString(){
+		return testfield1 + testField2;
+	}
 }
