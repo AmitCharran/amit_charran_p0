@@ -45,11 +45,13 @@ public class ormDriver {
 
 
 
-       // cfg.addAnnotatedClass(Movies.class);
+       cfg.addAnnotatedClass(Movies.class);
           //  cfg.addAnnotatedClass(TvShows.class);
 
-        cfg.insertIntoTable(TvShows.class, "Watchmen", "Superhero", 1);
-       // cfg.insertIntoTable(Movies.class, "The Prestige", "Action", 2.0, "R");
+        //cfg.insertIntoTable(TvShows.class, "Watchmen", "Superhero", 1);
+        cfg.insertIntoTable(Movies.class, "The Prestige", "Action", 2.0, "R");
+        cfg.insertIntoTable(Movies.class, "Interstellar", "Sci-fi", 3, "PG-13");
+        cfg.insertIntoTable(Movies.class, "Watchmen", "Sci-fi", 2.5, "R");
 
        // System.out.println(cfg.getById(Movies.class, 2));
 

@@ -63,7 +63,7 @@ public class DAOimpl implements DAO{
         List<String> ans = new ArrayList<>();
         Metamodel mm = new Metamodel(clazz);
         if(!tableExists(mm.getSimpleClassName())){
-            throw new IllegalStateException("Table does not exist");
+            return Optional.of(ans);
         }
         String getAllFromTable = "SELECT * FROM " + mm.getSimpleClassName();
         PreparedStatement ps;

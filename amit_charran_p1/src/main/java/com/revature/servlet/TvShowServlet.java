@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-@WebServlet(urlPatterns = "/tvShows")
-class TvShowServlet extends HttpServlet {
+@WebServlet(urlPatterns = "/tvshows")
+public class TvShowServlet extends HttpServlet {
     private String url;
     private String user;
     private String pass;
