@@ -15,6 +15,8 @@ public interface DAO {
 
     // Update
 
+    public void update(Class clazz, Object ...o);
+
     // Delete
     public void removeById(Class clazz, int id);
 

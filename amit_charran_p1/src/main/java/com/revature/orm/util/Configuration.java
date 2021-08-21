@@ -83,6 +83,11 @@ public class Configuration {
        dao.insert(clazz, o);
     }
 
+
+    public void update(Class clazz, Object ...o){
+        dao.update(clazz, o);
+    }
+
     public void deleteByID(Class clazz,int id){
         dao.removeById(clazz, id);
     }

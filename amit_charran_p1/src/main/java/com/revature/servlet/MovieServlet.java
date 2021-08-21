@@ -36,12 +36,12 @@ public class MovieServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        service.updateUser(req, resp);
+        service.updateMovie(req, resp);
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        service.deleteUser(req, resp);
+        service.deleteMovie(req, resp);
     }
 
 }

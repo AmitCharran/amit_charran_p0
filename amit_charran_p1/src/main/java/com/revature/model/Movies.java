@@ -70,4 +70,15 @@ public class Movies {
     public void setMovieRating(MovieRating movieRating) {
         this.movieRating = movieRating;
     }
+
+    public boolean compareWithoutMovieId(Movies movie){
+        if(movie.getMovieName().equals(movieName)
+                && movie.getMovieRating().equals(movieRating)
+                && movie.getGenre().equals(genre)
+                && movieLength == movie.getMovieLength()){
+            return true;
+        }
+        return false;
+    }
+
 }

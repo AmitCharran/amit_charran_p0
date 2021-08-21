@@ -70,7 +70,7 @@ public class DAOimpl implements DAO{
         try(Connection connection = ConnectionUtil.getConnection(url,user,pass)){
         ps = connection.prepareStatement(getAllFromTable);
         ResultSetMetaData meta = ps.getMetaData();
-        for(int i =1; i <= meta.getColumnCount(); i++){
+        for(int i=1; i <= meta.getColumnCount(); i++){
             ans.add(meta.getColumnName(i));
         }
 
@@ -80,6 +80,8 @@ public class DAOimpl implements DAO{
 
         return Optional.of(ans);
     }
+
+
 
     public Optional<List<String>> getAllColumnTypes(Class clazz){
         List<String> ans = new ArrayList<>();
@@ -164,71 +166,6 @@ public class DAOimpl implements DAO{
         Metamodel mm = new Metamodel(clazz);
         List<ColumnField> fields = mm.getColumns();
         Object[] allObjects = o;
-
-
-
-        List<String> columnNames = getColumnNames(clazz).get();
-        List<String> columnTypes = getAllColumnTypes(clazz).get();
-
-        if(allObjects.length != columnNames.size() - 1){
-            // throw exception
-            System.out.println("Parameters do not match");
-            return;
-        }
-
-        HashMap<String,Type> reversedMap = new TypeToStringMap().reversedMapStringToDataType();
-
-        String insertString = "INSERT INTO " + mm.getSimpleClassName() + " (";
-        String columnNamesFormat = "";
-        for(int i = 0; i < columnNames.size(); i++){
-            String s = columnNames.get(i);
-            if(i == 0){
-                continue;
-            }else if(i == columnNames.size() - 1){
-                columnNamesFormat +=  s + ")";
-            }else{
-                columnNamesFormat += s +", ";
-            }
-        }
-
-        insertString += columnNamesFormat + " values (";
-
-
-        columnNamesFormat = "";
-        for(int i =0; i < allObjects.length;i++){
-            if(i == allObjects.length -1){
-                columnNamesFormat += "\'" +  allObjects[i] + "\')";
-            }else{
-                columnNamesFormat += "\'" + allObjects[i] + "\', ";
-            }
-        }
-        insertString += columnNamesFormat;
-        Statement s;
-        try(Connection connection = ConnectionUtil.getConnection(url,user,pass)){
-            s = connection.createStatement();
-            s.execute(insertString);
-
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void insert(Class<?> clazz) {
-        if(!tableExists(clazz.getSimpleName().toLowerCase(Locale.ROOT))){
-            throw new IllegalStateException("table does not exists, table name: " + clazz.getClass().getSimpleName());
-        }
-
-        Metamodel mm = new Metamodel(clazz);
-        List<ColumnField> fields = mm.getColumns();
-
-        // get all from clazz
-        Object[] allObjects = new Object[fields.size()];
-
-        for(int i =0; i < allObjects.length; i++){
-            Object value = fields.get(i).getField().get();
-        }
-
 
 
 
@@ -380,6 +317,51 @@ public class DAOimpl implements DAO{
 
 
         return allObject;
+    }
+
+    @Override
+    public void update(Class clazz, Object... o) {
+        if(!tableExists(clazz.getSimpleName().toLowerCase(Locale.ROOT))){
+            throw new IllegalStateException("table does not exists, table name: " + clazz.getClass().getSimpleName());
+        }
+
+        Metamodel mm = new Metamodel(clazz);
+        List<ColumnField> fields = mm.getColumns();
+        Object[] allObjects = o;
+
+        List<String> columnNames = getColumnNames(clazz).get();
+
+        if(allObjects.length != columnNames.size()){
+            // throw exception
+            System.out.println("Parameters do not match");
+            return;
+        }
+
+        String updateString = "UPDATE " + mm.getSimpleClassName() + " SET ";
+        String setPortionOfUpdateString = "";
+        for(int i = 1; i < columnNames.size(); i++){
+            if(i == columnNames.size() - 1){
+                setPortionOfUpdateString += columnNames.get(i) + " = \'" + allObjects[i] + "\' WHERE ";
+            }else{
+                setPortionOfUpdateString += columnNames.get(i) + " = \'" + allObjects[i] + "\', ";
+            }
+        }
+
+        updateString += setPortionOfUpdateString;
+        updateString += columnNames.get(0) + " = \'" + allObjects[0] +"\'";
+
+        Statement s;
+        try(Connection connection = ConnectionUtil.getConnection(url,user,pass)){
+            s = connection.createStatement();
+            s.execute(updateString);
+
+
+        }catch (SQLException e){
+            logger.warn("cannot update");
+            return;
+        }
+
+
     }
 
     @Override

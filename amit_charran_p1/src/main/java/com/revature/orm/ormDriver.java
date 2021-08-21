@@ -42,20 +42,23 @@ public class ormDriver {
 
         // now i'm testing for inserting into a table
         // Test a = new Test("one", "two", 3);
-        cfg.insertIntoTable(Test.class, "test3", "test4", 3, 5.34, new Date(System.currentTimeMillis()));
-        ArrayList<Object> al = (ArrayList<Object>) cfg.getAll(Test.class);
-        Object o = (Object) cfg.getById(Test.class, 7);
 
-        //cfg.deleteByID(Test.class, 2);
-        if(o instanceof Test){
-            Test x = (Test) o;
-            System.out.println(x.getTestField5());
-        }
+        cfg.update(Test.class, 1, "updated", "updated2", 55, 66.66, new Date(System.currentTimeMillis()));
 
-        if(al.get(2) instanceof Test){
-            Test x = (Test) al.get(5);
-            System.out.println(x.getTestField5());
-        }
+//        //cfg.insertIntoTable(Test.class, "test3", "test4", 3, 5.34, new Date(System.currentTimeMillis()));
+//        ArrayList<Object> al = (ArrayList<Object>) cfg.getAll(Test.class);
+//        Object o = (Object) cfg.getById(Test.class, 7);
+//
+//        //cfg.deleteByID(Test.class, 2);
+//        if(o instanceof Test){
+//            Test x = (Test) o;
+//            System.out.println(x.getTestField5());
+//        }
+//
+//        if(al.get(2) instanceof Test){
+//            Test x = (Test) al.get(5);
+//            System.out.println(x.getTestField5());
+//        }
 
     }
 }

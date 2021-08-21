@@ -1,6 +1,7 @@
 package com.revature.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.model.MovieRating;
 import com.revature.model.Movies;
 import com.revature.orm.util.Configuration;
 import org.slf4j.Logger;
@@ -66,7 +67,68 @@ public class MovieService {
         }
     }
 
+    public void updateMovie(HttpServletRequest req, HttpServletResponse resp) {
+        StringBuilder builder = new StringBuilder();
+        try {
 
+            req.getReader().lines()
+                    .collect(Collectors.toList())
+                    .forEach(builder::append);
+
+            Movies movie = mapper.readValue(builder.toString(), Movies.class);
+
+            if(movie.getMovieId() != 0){
+                boolean result = update(movie);
+
+                if(result){
+                    resp.setStatus(HttpServletResponse.SC_OK);
+
+                    String JSON = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(user);
+                    resp.getWriter().print(JSON);
+                }
+
+            } else{
+                resp.setStatus(HttpServletResponse.SC_CONFLICT);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void deleteMovie(HttpServletRequest req, HttpServletResponse resp) {
+        boolean result = delete(Integer.parseInt(req.getParameter("userId")));
+
+        if(result){
+            resp.setStatus(HttpServletResponse.SC_OK);
+        } else{
+            resp.setStatus(HttpServletResponse.SC_CONFLICT);
+        }
+    }
+
+    private boolean delete(int id){
+        List<Movies> movies = getMovies();
+        for(Movies movie: movies){
+            if(movie.getMovieId() == id){
+                cfg.deleteByID(Movies.class, id);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean update(Movies movie){
+        cfg.update(movie.getClass(), movie.getMovieId(), movie.getMovieName(), movie.getGenre(), movie.getMovieLength(), movie.getMovieRating());
+        List<Movies> allMovies = getMovies();
+
+        for(Movies m: allMovies){
+            if(m.compareWithoutMovieId(movie)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     private List<Movies> getMovies(){
         List<Movies> answer = new ArrayList<>();
@@ -90,7 +152,17 @@ public class MovieService {
     }
 
     private int insert(Movies movie){
-        return cfg.insertIntoTable(movie);
+        cfg.insertIntoTable(movie.getClass(), movie.getMovieName(), movie.getGenre(), movie.getMovieLength(), movie.getMovieRating());
+
+        List<Movies> allMovies = getMovies();
+
+        for(Movies m: allMovies){
+            if(m.compareWithoutMovieId(movie)){
+                return m.getMovieId();
+            }
+        }
+
+        return 0;
     }
 
 
