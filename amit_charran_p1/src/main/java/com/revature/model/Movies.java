@@ -19,11 +19,11 @@ public class Movies {
     private double movieLength;
 
     @Column(columnName = "movieRating")
-    private MovieRating movieRating;
+    private String movieRating;
 
     public Movies() {}
 
-    public Movies(int movieId, String movieName, String genre, double movieLength, MovieRating movieRating) {
+    public Movies(int movieId, String movieName, String genre, double movieLength, String movieRating) {
         this.movieId = movieId;
         this.movieName = movieName;
         this.genre = genre;
@@ -63,11 +63,11 @@ public class Movies {
         this.movieLength = movieLength;
     }
 
-    public MovieRating getMovieRating() {
+    public String getMovieRating() {
         return movieRating;
     }
 
-    public void setMovieRating(MovieRating movieRating) {
+    public void setMovieRating(String movieRating) {
         this.movieRating = movieRating;
     }
 
@@ -79,6 +79,14 @@ public class Movies {
             return true;
         }
         return false;
+    }
+
+    public String toString(){
+        return "Movie id: " + movieId
+                + "\nMovie name: " + movieName
+                + "\nMovie genre: " + genre
+                + "\nMovie length: " + movieLength
+                + "\nMovie Rating: " + movieRating;
     }
 
 }

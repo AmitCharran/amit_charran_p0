@@ -55,4 +55,13 @@ public class TvShows {
     public void setLength(double length) {
         this.length = length;
     }
+
+    public boolean compareWithoutTvShowId(TvShows tvShows){
+        if(tvShows.getTvShowName().equals(tvShowName)
+                && tvShows.getGenre().equals(genre)
+                && length == tvShows.getLength()){
+            return true;
+        }
+        return false;
+    }
 }

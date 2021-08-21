@@ -41,9 +41,6 @@ public class MovieService {
 
     public void insertMovies(HttpServletRequest req, HttpServletResponse resp) {
         try {
-//            Map<String, String[]> map = req.getParameterMap();
-//            User user = mapper.convertValue(map, User.class);
-
 
             StringBuilder builder = new StringBuilder();
             req.getReader().lines()
@@ -142,7 +139,6 @@ public class MovieService {
                         ((Movies) o).getGenre(),
                         ((Movies) o).getMovieLength(),
                         ((Movies) o).getMovieRating());
-
                 answer.add(toAdd);
             }
 

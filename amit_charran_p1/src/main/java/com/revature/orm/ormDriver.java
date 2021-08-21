@@ -1,5 +1,8 @@
 package com.revature.orm;
 
+import com.revature.model.MovieRating;
+import com.revature.model.Movies;
+import com.revature.model.TvShows;
 import com.revature.orm.model.Test;
 import com.revature.orm.model.User;
 import com.revature.orm.persistence.DAOimpl;
@@ -40,10 +43,20 @@ public class ormDriver {
         cfg.setSchema("p0");
        // cfg.addAnnotatedClass(Test.class);
 
+
+
+       // cfg.addAnnotatedClass(Movies.class);
+          //  cfg.addAnnotatedClass(TvShows.class);
+
+        cfg.insertIntoTable(TvShows.class, "Watchmen", "Superhero", 1);
+       // cfg.insertIntoTable(Movies.class, "The Prestige", "Action", 2.0, "R");
+
+       // System.out.println(cfg.getById(Movies.class, 2));
+
         // now i'm testing for inserting into a table
         // Test a = new Test("one", "two", 3);
 
-        cfg.update(Test.class, 1, "updated", "updated2", 55, 66.66, new Date(System.currentTimeMillis()));
+//        cfg.update(Test.class, 1, "updated", "updated2", 55, 66.66, new Date(System.currentTimeMillis()));
 
 //        //cfg.insertIntoTable(Test.class, "test3", "test4", 3, 5.34, new Date(System.currentTimeMillis()));
 //        ArrayList<Object> al = (ArrayList<Object>) cfg.getAll(Test.class);
