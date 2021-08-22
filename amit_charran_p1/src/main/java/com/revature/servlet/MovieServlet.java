@@ -21,6 +21,10 @@ public class MovieServlet extends HttpServlet {
     private static InputStream input;
     MovieService service;
 
+    /**
+     * This class interacts with the website
+     * urlPattern give the website link its name
+     */
     public MovieServlet(){
 
         properties = new Properties();
@@ -38,22 +42,46 @@ public class MovieServlet extends HttpServlet {
         this.pass = properties.getProperty("password");
         service = new MovieService(url,user,pass);
     }
-
+    /**
+     * Accesses database and returns all information to print to website in JSON format
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         service.getAllMovies(req, resp);
     }
-
+    /**
+     * insert into database with the input given
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         service.insertMovies(req, resp);
     }
-
+    /**
+     * update table with current input given
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         service.updateMovie(req, resp);
     }
-
+    /**
+     * delete row from table based on ID
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         service.deleteMovie(req, resp);

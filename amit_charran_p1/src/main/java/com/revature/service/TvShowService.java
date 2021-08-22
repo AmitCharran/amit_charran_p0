@@ -6,6 +6,7 @@ import com.revature.orm.util.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -14,9 +15,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Handles functions from servlet class
+ */
 public class TvShowService {
     private static final Logger logger = LoggerFactory.getLogger(TvShowService.class);
-
+    /**
+     * used to connect to the database and database functions
+     */
     private Configuration cfg;
     private String url;
     private String user;
@@ -28,6 +34,13 @@ public class TvShowService {
         mapper = new ObjectMapper();
     }
 
+    /**
+     * Accesses database and returns all information to print to website in JSON format
+     * @param req
+     * @param res html status
+     * @throws ServletException
+     * @throws IOException
+     */
     public void getAllTvShows(HttpServletRequest req, HttpServletResponse res){
         try {
             String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(getTvShows());
@@ -38,6 +51,13 @@ public class TvShowService {
         }
     }
 
+    /**
+     * insert into database with the input given
+     * @param req info from user
+     * @param resp returns html status
+     * @throws ServletException
+     * @throws IOException
+     */
     public void insertTvShows(HttpServletRequest req, HttpServletResponse resp) {
         try {
 
@@ -62,7 +82,13 @@ public class TvShowService {
             logger.warn(e.getMessage());
         }
     }
-
+    /**
+     * update table with current input given
+     * @param req
+     * @param resp html status
+     * @throws ServletException
+     * @throws IOException
+     */
     public void updateTvShow(HttpServletRequest req, HttpServletResponse resp) {
         StringBuilder builder = new StringBuilder();
         try {
@@ -93,6 +119,13 @@ public class TvShowService {
 
     }
 
+    /**
+     * delete row from table based on ID
+     * @param req info from user
+     * @param resp html status
+     * @throws ServletException
+     * @throws IOException
+     */
     public void deleteTvShow(HttpServletRequest req, HttpServletResponse resp) {
         boolean result = delete(Integer.parseInt(req.getParameter("userId")));
 
@@ -103,6 +136,11 @@ public class TvShowService {
         }
     }
 
+    /**
+     * Deletes current row
+     * @param id id of current row to delete
+     * @return true if row is deleted, false if is not deleted
+     */
     private boolean delete(int id){
         List<TvShows> TvShows = getTvShows();
         for(TvShows TvShow: TvShows){
@@ -114,6 +152,11 @@ public class TvShowService {
         return false;
     }
 
+    /**
+     * changes value in current table. Table identified id from current object
+     * @param TvShow current row user wants to update
+     * @return true if item exists and can be updated and false if item id does not exist
+     */
     private boolean update(TvShows TvShow){
         cfg.update(TvShow.getClass(), TvShow.getTvId(), TvShow.getTvShowName(), TvShow.getGenre(), TvShow.getLength());
         List<TvShows> allTvShows = getTvShows();
@@ -126,6 +169,10 @@ public class TvShowService {
         return false;
     }
 
+    /**
+     * connect to database and gets info from tvShow table
+     * @return list of tvShows objects
+     */
     private List<TvShows> getTvShows(){
         List<TvShows> answer = new ArrayList<>();
         List<Object> result = cfg.getAll(TvShows.class);
@@ -145,6 +192,11 @@ public class TvShowService {
         return answer;
     }
 
+    /**
+     * updates table
+     * @param TvShow values to update and helps get the table
+     * @return 0 = https status conflict --> returns tvId
+     */
     private int insert(TvShows TvShow){
         cfg.insertIntoTable(TvShow.getClass(), TvShow.getTvShowName(), TvShow.getGenre(), TvShow.getLength());
 

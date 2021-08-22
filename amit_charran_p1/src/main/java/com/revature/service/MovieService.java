@@ -7,6 +7,7 @@ import com.revature.orm.util.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -14,10 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+/**
+ * Handles functions from servlet class
+ */
 public class MovieService {
     private static final Logger logger = LoggerFactory.getLogger(MovieService.class);
-
+    /**
+     * used to connect to the database and database functions
+     */
     private Configuration cfg;
     private String url;
     private String user;
@@ -28,7 +33,13 @@ public class MovieService {
         cfg = new Configuration(url,user,pass);
         mapper = new ObjectMapper();
     }
-
+    /**
+     * Accesses database and returns all information to print to website in JSON format
+     * @param req
+     * @param res html status
+     * @throws ServletException
+     * @throws IOException
+     */
     public void getAllMovies(HttpServletRequest req, HttpServletResponse res){
         try {
             String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(getMovies());
@@ -38,7 +49,13 @@ public class MovieService {
             logger.warn(e.getMessage(), e);
         }
     }
-
+    /**
+     * insert into database with the input given
+     * @param req info from user
+     * @param resp returns html status
+     * @throws ServletException
+     * @throws IOException
+     */
     public void insertMovies(HttpServletRequest req, HttpServletResponse resp) {
         try {
 
@@ -63,7 +80,13 @@ public class MovieService {
             logger.warn(e.getMessage());
         }
     }
-
+    /**
+     * update table with current input given
+     * @param req
+     * @param resp html status
+     * @throws ServletException
+     * @throws IOException
+     */
     public void updateMovie(HttpServletRequest req, HttpServletResponse resp) {
         StringBuilder builder = new StringBuilder();
         try {
@@ -93,7 +116,13 @@ public class MovieService {
         }
 
     }
-
+    /**
+     * delete row from table based on ID
+     * @param req info from user
+     * @param resp html status
+     * @throws ServletException
+     * @throws IOException
+     */
     public void deleteMovie(HttpServletRequest req, HttpServletResponse resp) {
         boolean result = delete(Integer.parseInt(req.getParameter("userId")));
 
@@ -103,7 +132,11 @@ public class MovieService {
             resp.setStatus(HttpServletResponse.SC_CONFLICT);
         }
     }
-
+    /**
+     * Deletes current row
+     * @param id id of current row to delete
+     * @return true if row is deleted, false if is not deleted
+     */
     private boolean delete(int id){
         List<Movies> movies = getMovies();
         for(Movies movie: movies){
@@ -114,7 +147,11 @@ public class MovieService {
         }
         return false;
     }
-
+    /**
+     * changes value in current table. Table identified id from current object
+     * @param movie current row user wants to update
+     * @return true if item exists and can be updated and false if item id does not exist
+     */
     private boolean update(Movies movie){
         cfg.update(movie.getClass(), movie.getMovieId(), movie.getMovieName(), movie.getGenre(), movie.getMovieLength(), movie.getMovieRating());
         List<Movies> allMovies = getMovies();
@@ -127,6 +164,10 @@ public class MovieService {
         return false;
     }
 
+    /**
+     * connect to database and gets info from tvShow table
+     * @return list of movie objects
+     */
     private List<Movies> getMovies(){
         List<Movies> answer = new ArrayList<>();
         List<Object> result = cfg.getAll(Movies.class);
@@ -146,7 +187,11 @@ public class MovieService {
 
         return answer;
     }
-
+    /**
+     * updates table
+     * @param movie values to update and helps get the table
+     * @return 0 = https status conflict --> returns tvId
+     */
     private int insert(Movies movie){
         cfg.insertIntoTable(movie.getClass(), movie.getMovieName(), movie.getGenre(), movie.getMovieLength(), movie.getMovieRating());
 

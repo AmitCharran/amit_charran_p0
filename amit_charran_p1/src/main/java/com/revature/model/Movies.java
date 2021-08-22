@@ -4,20 +4,38 @@ import com.revature.orm.annotations.Column;
 import com.revature.orm.annotations.Entity;
 import com.revature.orm.annotations.Id;
 
+/**
+ * Class created with annotations to work with my ORM
+ */
 @Entity(tableName = "movies")
 public class Movies {
+    /**
+     * This will identify primary key
+     */
     @Id(columnName = "id")
     private int movieId;
 
+    /**
+     * This will be the first column
+     */
     @Column(columnName = "movieName")
     private String movieName;
 
+    /**
+     * This will be the second column
+     */
     @Column(columnName = "genre")
     private String genre;
 
+    /**
+     * Another column in SQL tbale
+     */
     @Column(columnName = "movieLength")
     private double movieLength;
 
+    /**
+     * the final column in SQL table
+     */
     @Column(columnName = "movieRating")
     private String movieRating;
 
@@ -71,6 +89,12 @@ public class Movies {
         this.movieRating = movieRating;
     }
 
+    /**
+     * Used to compare table values are eqaul
+     * This is used to grab primary key when none are provided
+     * @param movie Object to compare to
+     * @return if value exists in table return true
+     */
     public boolean compareWithoutMovieId(Movies movie){
         if(movie.getMovieName().equals(movieName)
                 && movie.getMovieRating().equals(movieRating)

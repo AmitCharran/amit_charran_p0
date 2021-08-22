@@ -23,16 +23,6 @@ public class Configuration {
     final static Logger logger = LoggerFactory.getLogger(Configuration.class);
 
     /**
-     * No Args Constructor
-     */
-    public Configuration(){
-        dbURL = "";
-        dbUsername = "";
-        dbPassword = "";
-        dao = new DAOimpl(dbURL, dbUsername, dbPassword);
-    }
-
-    /**
      * Constructor which initializes the
      * @param url endpoint for DB
      * @param user username for DB
@@ -82,7 +72,7 @@ public class Configuration {
      * Get one values from SQL table by ID
      * @param clazz current class to identify current SQL table user want to access
      * @param id the id of object the user wants to return
-     * @return
+     * @return object that represents table
      */
     public Object getById(Class clazz, int id){
         return dao.getById(clazz, id);

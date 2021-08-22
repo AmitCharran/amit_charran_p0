@@ -14,6 +14,9 @@ import java.sql.*;
 import java.util.*;
 import java.util.stream.Stream;
 
+/**
+ * Used to connect to our database
+ */
 public class DAOimpl implements DAO{
 
     final static Logger logger = LoggerFactory.getLogger(DAOimpl.class);
@@ -23,13 +26,22 @@ public class DAOimpl implements DAO{
     private String user;
     private String pass;
 
-
+    /**
+     * constructor with values used for database initialization
+     * @param url
+     * @param user
+     * @param pass
+     */
     public DAOimpl(String url, String user, String pass){
         this.url = url;
         this.user = user;
         this.pass = pass;
     }
 
+    /**
+     * Create table depending on current class
+     * @param clazz if annotations are correct, a table is created
+     */
     @Override
     public void createTable(Class<?> clazz) {
         Metamodel mm = new Metamodel(clazz);
@@ -45,6 +57,12 @@ public class DAOimpl implements DAO{
             addColumn(mm,c);
         }
     }
+
+    /**
+     * Added primary column to table
+     * @param mm MetaModel of current table
+     * @param id id of current table
+     */
     private void addPrimaryKey(Metamodel mm, IdField id){
         HashMap<Type, String> mapTypeToSQLType = new TypeToStringMap().dataTypeToStringConversion();
         String addKey = "ALTER TABLE " + mm.getSimpleClassName()
@@ -59,6 +77,12 @@ public class DAOimpl implements DAO{
             e.printStackTrace();
         }
     }
+
+    /**
+     * Returns column name of current table
+     * @param clazz used to identify current table
+     * @return String of column names
+     */
     public Optional<List<String>> getColumnNames(Class clazz){
         List<String> ans = new ArrayList<>();
         Metamodel mm = new Metamodel(clazz);
@@ -82,7 +106,11 @@ public class DAOimpl implements DAO{
     }
 
 
-
+    /**
+     * Return column types from current table
+     * @param clazz used to identify current table
+     * @return List of column Types
+     */
     public Optional<List<String>> getAllColumnTypes(Class clazz){
         List<String> ans = new ArrayList<>();
         Metamodel mm = new Metamodel(clazz);
@@ -105,6 +133,11 @@ public class DAOimpl implements DAO{
         return Optional.of(ans);
     }
 
+    /**
+     * add column to current table. Table is identified using Metamodel mm
+     * @param mm used to identify current table
+     * @param c used to identify which column field name to use
+     */
     private void addColumn(Metamodel mm, ColumnField c){
 
         HashMap<Type, String> mapTypeToSQLType = new TypeToStringMap().dataTypeToStringConversion();
@@ -128,6 +161,10 @@ public class DAOimpl implements DAO{
 
     }
 
+    /**
+     * Creates table based on current class
+     * @param mm used to get current class
+     */
     private void createTable(Metamodel mm){
         String createTable = "CREATE TABLE " + mm.getSimpleClassName() + "()";
         Statement s;
@@ -139,6 +176,11 @@ public class DAOimpl implements DAO{
         }
     }
 
+    /**
+     * checks if current table exist
+     * @param tableName current table
+     * @return true or false depending on if table exist
+     */
     public boolean tableExists(String tableName){
         try(Connection connection = ConnectionUtil.getConnection(url,user,pass)) {
             DatabaseMetaData dbm = connection.getMetaData();
@@ -152,29 +194,35 @@ public class DAOimpl implements DAO{
         }catch (SQLException e){
             e.printStackTrace();
         }
-
-//        logger.info("Cannot connect to DB, so will print table already exists");
+        logger.info("Cannot connect to DB, so will print table already exists");
         return true; // do not want to create table
     }
 
+    /**
+     * Insert values into table identified with clazz
+     * @param clazz used to identify the current table
+     * @param o set of objects needed to insert.
+     */
     @Override
     public void insert(Class<?> clazz, Object ...o) {
         if(!tableExists(clazz.getSimpleName().toLowerCase(Locale.ROOT))){
-            throw new IllegalStateException("table does not exists, table name: " + clazz.getClass().getSimpleName());
+            logger.warn("table does not exists, table name: " + clazz.getClass().getSimpleName());
+            return;
         }
 
         Metamodel mm = new Metamodel(clazz);
         List<ColumnField> fields = mm.getColumns();
         Object[] allObjects = o;
 
-
-
         List<String> columnNames = getColumnNames(clazz).get();
         List<String> columnTypes = getAllColumnTypes(clazz).get();
 
         if(allObjects.length != columnNames.size() - 1){
-            // throw exception
-            System.out.println("Parameters do not match");
+            logger.warn("Parameters do not match");
+            List<String> colNames = getColumnNames(clazz).get();
+            colNames.remove(0);
+            logger.warn("Parameters required based on columns." +
+                    colNames +"\nDo not include ID");
             return;
         }
 
@@ -212,10 +260,16 @@ public class DAOimpl implements DAO{
 
 
         }catch (SQLException e){
-            e.printStackTrace();
+            logger.warn("Cannot connect to Database for insertion to table " + clazz.getSimpleName());
         }
     }
 
+    /**
+     * Get one values from SQL table by ID
+     * @param clazz current class to identify current SQL table user want to access
+     * @param id the id of object the user wants to return
+     * @return object that represents table
+     */
     @Override
     public Object getById(Class clazz, int id) {
         if(!hasNoArgConstructor(clazz)){
@@ -267,6 +321,11 @@ public class DAOimpl implements DAO{
 
     }
 
+    /**
+     * Get all values from SQL table
+     * @param clazz current class to identify current SQL table user want to access
+     * @return List of current object identified by clazz
+     */
     @Override
     public List<Object> getAll(Class clazz) {
         if(!hasNoArgConstructor(clazz)){
@@ -319,10 +378,15 @@ public class DAOimpl implements DAO{
         return allObject;
     }
 
+    /**
+     * update values into table identified with clazz. Value is identified by Id given in ..o
+     * @param clazz used to identify the current table
+     * @param o used to set values in current table and identify which row to replace
+     */
     @Override
     public void update(Class clazz, Object... o) {
         if(!tableExists(clazz.getSimpleName().toLowerCase(Locale.ROOT))){
-            throw new IllegalStateException("table does not exists, table name: " + clazz.getClass().getSimpleName());
+            logger.warn("table does not exists, table name: " + clazz.getClass().getSimpleName());
         }
 
         Metamodel mm = new Metamodel(clazz);
@@ -332,8 +396,11 @@ public class DAOimpl implements DAO{
         List<String> columnNames = getColumnNames(clazz).get();
 
         if(allObjects.length != columnNames.size()){
-            // throw exception
-            System.out.println("Parameters do not match");
+            logger.warn("Parameters do not match");
+            List<String> colNames = getColumnNames(clazz).get();
+            colNames.remove(0);
+            logger.warn("Parameters required based on columns." +
+                    colNames +"\nDo not include ID");
             return;
         }
 
@@ -357,13 +424,18 @@ public class DAOimpl implements DAO{
 
 
         }catch (SQLException e){
-            logger.warn("cannot update");
+            logger.warn("cannot update table: " + clazz.getSimpleName());
             return;
         }
 
 
     }
 
+    /**
+     * update values into table identified with clazz. Value is identified by Id
+     * @param clazz used to identify the current table
+     * @param id used to identify row
+     */
     @Override
     public void removeById(Class clazz, int id) {
         Metamodel mm = new Metamodel(clazz);
@@ -384,6 +456,12 @@ public class DAOimpl implements DAO{
 
     }
 
+    /**
+     * When sorted set is retrieved, this method will sort it depending on table columns
+     * @param allColumnNames a list of all column names
+     * @param unsortedSet An unsorted list of setter methods
+     * @return
+     */
     private List<Method> sortUnsortedSet(List<String> allColumnNames, List<Method> unsortedSet) {
         List<Method> sortedSet = new ArrayList<>();
         for(int i =0; i < allColumnNames.size(); i++){
@@ -399,6 +477,11 @@ public class DAOimpl implements DAO{
         return sortedSet;
     }
 
+    /**
+     * check if there is a no argument constructor is class
+     * @param clazz class we are checking the current method in
+     * @return true or false
+     */
     private boolean hasNoArgConstructor(Class<?> clazz) {
         return Stream.of(clazz.getConstructors())
                 .anyMatch((c) -> c.getParameterCount() == 0);

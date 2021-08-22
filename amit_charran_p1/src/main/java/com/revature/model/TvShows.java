@@ -3,7 +3,9 @@ package com.revature.model;
 import com.revature.orm.annotations.Column;
 import com.revature.orm.annotations.Entity;
 import com.revature.orm.annotations.Id;
-
+/**
+ * Class created with annotations to work with my ORM
+ */
 @Entity(tableName = "tvShows")
 public class TvShows {
     @Id(columnName = "tvId")
@@ -55,7 +57,12 @@ public class TvShows {
     public void setLength(double length) {
         this.length = length;
     }
-
+    /**
+     * Used to compare table values are eqaul
+     * This is used to grab primary key when none are provided
+     * @param tvShows Object to compare to
+     * @return if value exists in table return true
+     */
     public boolean compareWithoutTvShowId(TvShows tvShows){
         if(tvShows.getTvShowName().equals(tvShowName)
                 && tvShows.getGenre().equals(genre)
