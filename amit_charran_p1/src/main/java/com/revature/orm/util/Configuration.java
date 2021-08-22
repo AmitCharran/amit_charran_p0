@@ -65,45 +65,87 @@ public class Configuration {
         return this; // we're returning the
     }
 
-    public List<Object> getAll(Class clazz){
 
+    /**
+     * Get all values from SQL table
+     * @param clazz current class to identify current SQL table user want to access
+     * @return List of current object identified by clazz
+     */
+    public List<Object> getAll(Class clazz){
         if(!dao.tableExists(clazz.getSimpleName().toLowerCase())){
                logger.warn("Table name " + clazz.getSimpleName().toLowerCase() + " does not exist. Cannot retrieve");
         }
-
         return dao.getAll(clazz);
     }
 
+    /**
+     * Get one values from SQL table by ID
+     * @param clazz current class to identify current SQL table user want to access
+     * @param id the id of object the user wants to return
+     * @return
+     */
     public Object getById(Class clazz, int id){
         return dao.getById(clazz, id);
     }
 
 
+    /**
+     * Insert values into table identified with clazz
+     * @param clazz used to identify the current table
+     * @param o set of objects needed to insert.
+     */
     public void insertIntoTable(Class clazz, Object ...o){
        dao.insert(clazz, o);
     }
 
-
+    /**
+     * update values into table identified with clazz. Value is identified by Id given in ..o
+     * @param clazz used to identify the current table
+     * @param o used to set values in current table and identify which row to replace
+     */
     public void update(Class clazz, Object ...o){
         dao.update(clazz, o);
     }
 
+    /**
+     * update values into table identified with clazz. Value is identified by Id
+     * @param clazz used to identify the current table
+     * @param id used to identify row
+     */
     public void deleteByID(Class clazz,int id){
         dao.removeById(clazz, id);
     }
 
+    /**
+     * return column names from table
+     * @param clazz used to identify table
+     * @return list of column names
+     */
     public List<String> getColumnNames(Class clazz){
         return dao.getColumnNames(clazz).orElse(null);
     }
 
+    /**
+     * Return the types of all columns to map to current type of class
+     * @param clazz identifies current table
+     * @return list of class type
+     */
     public List<String> getColumnTypes(Class clazz){
         return dao.getAllColumnTypes(clazz).orElse(null);
     }
 
+    /**
+     * returns a metamodel instance of list of all current classes initialized by configuration class
+     * @return list of metamodels
+     */
     public List<Metamodel<Class<?>>> getMetamodels() {
         return (metamodelList == null) ? Collections.emptyList() : metamodelList;
     }
 
+    /**
+     * Sets current schema in current database
+     * @param schema the shema you want to set
+     */
     public void setSchema(String schema){
         ConnectionUtil.setSchema(schema);
     }

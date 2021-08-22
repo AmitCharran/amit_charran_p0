@@ -9,6 +9,7 @@ public class LoggingConfig {
     final static Logger logger = (Logger) LoggerFactory.getLogger(LoggingConfig.class);
 
 
+
     public static void main(String[] args){
         /*
         Logging Levels

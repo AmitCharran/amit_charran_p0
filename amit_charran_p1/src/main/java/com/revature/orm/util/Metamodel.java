@@ -73,8 +73,8 @@ public class Metamodel<T> {
                 return new IdField(field);
             }
         }
-        throw new RuntimeException("Did not find a field annotated with @Id in: " + clazz.getName());
-
+        logger.warn("Did not find a field annotated with @Id in: " + clazz.getName());
+        throw new RuntimeException();
     }
 
     /**
@@ -92,7 +92,8 @@ public class Metamodel<T> {
         }
 
         if (columnFields.isEmpty()) {
-            throw new RuntimeException("No columns found in: " + clazz.getName());
+            logger.warn("No columns found in: " + clazz.getName());
+            throw new RuntimeException();
         }
 
         return columnFields;
@@ -119,6 +120,10 @@ public class Metamodel<T> {
         return foreignKeyFields;
     }
 
+    /**
+     * returns all methods from current class
+     * @return List of Methods
+     */
     public List<Method> getDeclaredMethods(){
         List<Method> ans = new ArrayList<>();
         Method[] methods = this.clazz.getDeclaredMethods();
@@ -128,6 +133,10 @@ public class Metamodel<T> {
         return ans;
     }
 
+    /**
+     * Returns a list of set methods
+     * @return an unsorted list of set methods
+     */
     public List<Method> getSetMethodsUnsorted(){
         Method[] methods = this.clazz.getDeclaredMethods();
         Stream<Method> setMethods = Arrays.stream(methods)
